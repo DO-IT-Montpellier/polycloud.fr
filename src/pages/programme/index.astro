@@ -1,0 +1,48 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Icon from "../../components/Icon.astro";
+import EditionHero from "../../components/programme/EditionHero.astro";
+import ProgrammeView from "../../components/programme/ProgrammeView.astro";
+import { currentEdition as edition, formatDate } from "../../data/editions";
+import { event, links } from "../../data/site";
+---
+
+<Layout
+  title="Programme"
+  description={`Programme de Polycloud ${edition.year}, ${formatDate(edition.date).toLowerCase()} : talks, speakers et horaires.`}
+>
+  <EditionHero edition={edition} title={`Programme ${edition.year}`}>
+    <a
+      href={`/programme/${edition.year}.ics`}
+      download={`polycloud-${edition.year}.ics`}
+      class="inline-flex items-center gap-2 rounded-full bg-plum-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-plum-600/25 transition hover:bg-plum-700"
+    >
+      <Icon name="calendar-plus" class="size-4.5" />
+      Ajouter à mon agenda
+    </a>
+    {
+      event.ended && (
+        <a
+          href={links.youtube}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-plum-700 ring-1 ring-plum-200 transition hover:bg-plum-50 hover:ring-plum-400"
+        >
+          <Icon name="play" class="size-4.5" />
+          Voir les rediffusions
+        </a>
+      )
+    }
+    <a
+      href="/previous-editions"
+      class="group inline-flex items-center gap-2 rounded-full px-4 py-3 text-sm font-semibold text-plum-700 transition hover:bg-plum-100"
+    >
+      Éditions précédentes
+      <Icon name="arrow-right" class="size-4 transition group-hover:translate-x-0.5" />
+    </a>
+  </EditionHero>
+
+  <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <ProgrammeView edition={edition} />
+  </section>
+</Layout>

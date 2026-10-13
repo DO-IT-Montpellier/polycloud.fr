@@ -1,0 +1,41 @@
+---
+import CloudMark from "../CloudMark.astro";
+import Icon from "../Icon.astro";
+import { type Edition, formatDate } from "../../data/editions";
+import { event } from "../../data/site";
+
+interface Props {
+  edition: Edition;
+  title: string;
+}
+
+const { edition, title } = Astro.props;
+---
+
+<section class="relative overflow-hidden print:overflow-visible">
+  <CloudMark class="pointer-events-none absolute -top-10 -right-24 h-72 w-auto text-plum-600/[0.06] sm:-right-10 sm:h-96 print:hidden" />
+  <div class="relative mx-auto max-w-7xl px-4 pt-12 pb-8 sm:px-6 sm:pt-20 lg:px-8">
+    <slot name="before" />
+
+    <p class="text-xs font-bold tracking-logo text-lilac-500 uppercase">{edition.ordinal}</p>
+    <h1 class="mt-3 text-4xl leading-tight font-bold text-balance text-plum-700 sm:text-5xl">{title}</h1>
+    <p class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-plum-950/75">
+      <span class="inline-flex items-center gap-2">
+        <Icon name="calendar" class="size-5 text-lilac-400" />
+        <time datetime={edition.date}>{formatDate(edition.date)}</time>
+      </span>
+      <span class="inline-flex items-center gap-2">
+        <Icon name="map-pin" class="size-5 text-lilac-400" />
+        {event.venue}
+      </span>
+    </p>
+
+    {
+      Astro.slots.has("default") && (
+        <div class="mt-8 flex flex-wrap gap-3 print:hidden">
+          <slot />
+        </div>
+      )
+    }
+  </div>
+</section>

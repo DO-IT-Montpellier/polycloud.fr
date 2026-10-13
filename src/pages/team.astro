@@ -1,0 +1,95 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import TeamGrid from "../components/TeamGrid.astro";
+import { currentEdition } from "../data/editions";
+import { links } from "../data/site";
+
+const team = currentEdition.team ?? [];
+
+const skills = [
+  "Gestion de projet",
+  "Leadership",
+  "Communication",
+  "Travail en équipe",
+];
+---
+
+<Layout
+  title="L'équipe"
+  description="L'équipe d'étudiant·e·s de la filière DevOps de Polytech Montpellier qui organise Polycloud."
+>
+  <PageHero
+    eyebrow="À propos de nous"
+    title="Des étudiant·e·s passionné·e·s par la culture DevOps"
+  >
+    <p>
+      Nous sommes des étudiant·e·s apprenti·e·s à l'école d'ingénieur Polytech
+      Montpellier, en cursus d'apprentissage dans la{" "}
+      <a
+        href={links.devopsCourse}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-semibold text-plum-600 underline decoration-lilac-400 decoration-2 underline-offset-4 hover:decoration-plum-600"
+        >filière DevOps</a
+      >.
+    </p>
+  </PageHero>
+
+  <section
+    class="mx-auto grid max-w-7xl gap-5 px-4 sm:px-6 lg:grid-cols-[1.3fr_1fr] lg:px-8"
+  >
+    <div
+      class="rounded-3xl bg-white p-8 leading-relaxed text-plum-950/75 ring-1 ring-plum-900/5 sm:p-10"
+    >
+      <p>
+        <strong class="text-plum-700">DO</strong>, c'est l'acronyme de{" "}
+        <strong class="text-plum-700"
+          >Développement informatique et exploitation Opérationnelle</strong
+        >, en bref, le cœur du DevOps&nbsp;! Cette formation en apprentissage
+        forme les ingénieur·e·s de demain à la maîtrise de{" "}
+        <strong class="text-plum-700">toute la chaîne de production</strong> d'une
+        application&nbsp;: du développement et des tests d'intégration jusqu'au déploiement,
+        à la maintenance et à la surveillance des applications en environnement cloud
+        ☁️.
+      </p>
+      <p class="mt-5">
+        Notre parcours est ponctué de nombreux défis, et l'un des plus
+        enrichissants est sans doute celui-ci&nbsp;:{" "}
+        <strong class="text-plum-700"
+          >organiser une conférence professionnelle</strong
+        >.
+      </p>
+    </div>
+    <div
+      class="flex flex-col justify-between rounded-3xl bg-plum-600 p-8 text-white sm:p-10"
+    >
+      <p class="leading-relaxed text-white/85">
+        Polycloud, c'est l'aboutissement de ce challenge unique, qui nous permet
+        d'acquérir des compétences et des valeurs qu'on ne trouve pas dans un
+        cours&nbsp;:
+      </p>
+      <ul class="mt-6 flex flex-wrap gap-2">
+        {
+          skills.map((s) => (
+            <li class="rounded-full bg-white/15 px-4 py-2 text-sm font-semibold">
+              {s}
+            </li>
+          ))
+        }
+        <li class="rounded-full bg-lilac-400 px-4 py-2 text-sm font-semibold">
+          et bien plus encore…
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 pt-24 sm:px-6 lg:px-8">
+    <SectionHeading
+      eyebrow={`${team.length} membres`}
+      title="L'équipe Polycloud"
+    />
+    <TeamGrid members={team} class="mt-10" />
+  </section>
+</Layout>

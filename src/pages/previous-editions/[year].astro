@@ -1,0 +1,98 @@
+---
+import type { GetStaticPaths } from "astro";
+import Layout from "../../layouts/Layout.astro";
+import Icon from "../../components/Icon.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import SponsorTiers from "../../components/SponsorTiers.astro";
+import TeamGrid from "../../components/TeamGrid.astro";
+import EditionHero from "../../components/programme/EditionHero.astro";
+import ProgrammeView from "../../components/programme/ProgrammeView.astro";
+import { currentEdition, editions, formatDate, talksOf } from "../../data/editions";
+import { links } from "../../data/site";
+
+// The current edition is the main content of the site; only past ones get a page here
+const past = editions.filter((e) => e.year !== currentEdition.year);
+
+export const getStaticPaths = (() =>
+  editions
+    .filter((e) => e.year !== currentEdition.year)
+    .map((edition) => ({ params: { year: String(edition.year) }, props: { edition } }))) satisfies GetStaticPaths;
+
+const { edition } = Astro.props;
+const talks = talksOf(edition).filter((t) => t.speakers.length > 0);
+const replays = talks.filter((t) => t.video).length;
+---
+
+<Layout
+  title={`Édition ${edition.year}`}
+  description={`Polycloud ${edition.year} (${edition.ordinal.toLowerCase()}), ${formatDate(edition.date).toLowerCase()} : programme, speakers et rediffusions.`}
+>
+  <EditionHero edition={edition} title={`Polycloud ${edition.year}`}>
+    <nav slot="before" aria-label="Éditions précédentes" class="mb-8 flex flex-wrap items-center gap-2 print:hidden">
+      <a
+        href="/previous-editions"
+        class="group mr-2 inline-flex items-center gap-1.5 text-sm font-semibold text-plum-600 hover:text-plum-800"
+      >
+        <Icon name="arrow-right" class="size-4 rotate-180 transition group-hover:-translate-x-0.5" />
+        Toutes les éditions
+      </a>
+      <ul class="flex flex-wrap gap-2">
+        {
+          past.map((e) => (
+            <li>
+              <a
+                href={`/previous-editions/${e.year}`}
+                aria-current={e.year === edition.year ? "page" : undefined}
+                class:list={[
+                  "inline-flex rounded-full px-4 py-1.5 text-sm font-bold transition",
+                  e.year === edition.year
+                    ? "bg-plum-600 text-white"
+                    : "bg-white text-plum-700 ring-1 ring-plum-900/10 hover:ring-plum-300",
+                ]}
+              >
+                {e.year}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    {
+      replays > 0 && (
+        <a
+          href={links.youtube}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 rounded-full bg-plum-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-plum-600/25 transition hover:bg-plum-700"
+        >
+          <Icon name="play" class="size-4.5" />
+          {replays} rediffusions sur YouTube
+        </a>
+      )
+    }
+  </EditionHero>
+
+  <section aria-labelledby="programme" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <h2 id="programme" class="sr-only">Programme</h2>
+    <ProgrammeView edition={edition} />
+  </section>
+
+  {
+    edition.sponsors && (
+      <section class="mx-auto max-w-7xl px-4 pt-24 sm:px-6 lg:px-8">
+        <SectionHeading eyebrow="Ils nous ont soutenus" title={`Sponsors ${edition.year}`} align="center" class="mb-12" />
+        <SponsorTiers tiers={edition.sponsors} />
+      </section>
+    )
+  }
+
+  {
+    edition.team && (
+      <section class="mx-auto max-w-7xl px-4 pt-24 sm:px-6 lg:px-8">
+        <SectionHeading eyebrow={`${edition.team.length} membres`} title={`L’équipe ${edition.year}`} />
+        <TeamGrid members={edition.team} class="mt-10" />
+      </section>
+    )
+  }
+</Layout>

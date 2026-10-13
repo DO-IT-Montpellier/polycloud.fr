@@ -1,0 +1,327 @@
+import type { Edition } from './types';
+
+const edition: Edition = {
+  year: 2026,
+  date: '2026-06-06',
+  ordinal: 'Cinquième édition',
+  rooms: ['Amphi Peytavin', 'Salle SC001'],
+  roomsNamed: true,
+  notes: ['Les conférences sont intégralement en français.'],
+  sessions: [
+    { kind: 'break', start: '08:30', end: '09:00', title: 'Accueil / petit déjeuner' },
+    { kind: 'break', start: '09:00', end: '09:10', title: 'Ouverture' },
+    {
+      kind: 'talk',
+      start: '09:10',
+      end: '10:00',
+      room: 0,
+      keynote: true,
+      topic: 'discovery',
+      title: 'Using Open Source to Learn, Grow, and Find Your Place',
+      speakers: ['Luis Rubiera'],
+      video: 'https://www.youtube.com/watch?v=Z9clLR9gsWA',
+    },
+
+    {
+      kind: 'talk',
+      start: '10:10',
+      end: '11:00',
+      room: 0,
+      topic: 'cloud',
+      advanced: true,
+      title: 'Gateway API, 10 ans de maturation pour une nouvelle API Kubernetes',
+      speakers: ['Kévin Davin'],
+      video: 'https://www.youtube.com/watch?v=uIr64oJRk8U',
+    },
+    {
+      kind: 'talk',
+      start: '10:10',
+      end: '11:00',
+      room: 1,
+      topic: 'security',
+      title: 'Laisse pas traîner ton mot de passe',
+      speakers: ['Tristan-Mihai Radulescu'],
+      video: 'https://www.youtube.com/watch?v=BCTjS8AD17c',
+    },
+
+    {
+      kind: 'talk',
+      start: '11:10',
+      end: '12:00',
+      room: 0,
+      topic: 'ai',
+      advanced: true,
+      title: 'Quand TCP meurt à 20 minutes de latence : construire un réseau interplanétaire',
+      speakers: ['Hugo Ponthieu', 'Mathias Durat', 'Sarah Theoulle'],
+      video: 'https://www.youtube.com/watch?v=Eu158vTsy5A',
+    },
+    {
+      kind: 'talk',
+      start: '11:10',
+      end: '12:00',
+      room: 1,
+      topic: 'infra',
+      title:
+        "Une stack de virtualisation à l'heure du DevOps et du cloud-native ? (et une alternative à VMware !)",
+      speakers: ['Nathanaël Hannebert'],
+      video: 'https://www.youtube.com/watch?v=GJ_b5Q-_V_4',
+    },
+
+    {
+      kind: 'talk',
+      start: '12:10',
+      end: '12:40',
+      room: 0,
+      topic: 'ai',
+      advanced: true,
+      title: 'Le continuum edge-cloud : concepts, architectures et enjeux',
+      speakers: ['Patrick Valduriez'],
+      video: 'https://www.youtube.com/watch?v=C5UzvJHPq6A',
+    },
+    {
+      kind: 'talk',
+      start: '12:10',
+      end: '12:40',
+      room: 1,
+      topic: 'observability',
+      title: "Du monitoring à l'observabilité : OpenTelemetry en pratique",
+      speakers: ['Axel Frache'],
+      video: 'https://www.youtube.com/watch?v=-_txtcO375E',
+    },
+
+    { kind: 'break', start: '12:40', end: '14:10', title: 'Pause repas' },
+
+    {
+      kind: 'talk',
+      start: '14:10',
+      end: '15:00',
+      room: 0,
+      topic: 'hardware',
+      advanced: true,
+      title: 'Your CPU Is Slacking Off: Inside the Biggest Cloud Architectural Shift',
+      speakers: ['Samuel Ortiz'],
+      video: 'https://www.youtube.com/watch?v=2li-cxIqFQw',
+    },
+    {
+      kind: 'talk',
+      start: '14:10',
+      end: '15:00',
+      room: 1,
+      topic: 'discovery',
+      title: "RINA : Repenser l'Internet du futur",
+      speakers: ['Théo Tchilinguirian'],
+      video: 'https://www.youtube.com/watch?v=JbXgs69mjQo',
+    },
+
+    {
+      kind: 'talk',
+      start: '15:10',
+      end: '16:00',
+      room: 0,
+      topic: 'ai',
+      advanced: true,
+      title: 'Codons un maître du jeu (de rôle) multi-agents avec Strands Agents',
+      speakers: ['Tiffany Souterre', 'Olivier Leplus'],
+      video: 'https://www.youtube.com/watch?v=HVtaBMDnUC4',
+    },
+    {
+      kind: 'talk',
+      start: '15:10',
+      end: '16:00',
+      room: 1,
+      topic: 'cloud',
+      title: "Migrations Cloud : L'impossibilité d'une approche unique",
+      speakers: ['Nicolas Bruot'],
+      video: 'https://www.youtube.com/watch?v=MpKOoYndAVU',
+    },
+
+    { kind: 'break', start: '16:00', end: '16:20', title: 'Pause goûter' },
+
+    {
+      kind: 'talk',
+      start: '16:20',
+      end: '17:10',
+      room: 0,
+      topic: 'ai',
+      advanced: true,
+      title: 'Explaining MLOps',
+      speakers: ['Alexandre Gomez'],
+      video: 'https://www.youtube.com/watch?v=oNl09xLFIx0',
+    },
+    {
+      kind: 'talk',
+      start: '16:20',
+      end: '17:10',
+      room: 1,
+      topic: 'ai',
+      title: 'Comment les agents ont colonisé Carrefour',
+      speakers: ['Guillaume Blaquiere'],
+      video: 'https://www.youtube.com/watch?v=f59Y-wdFJAY',
+    },
+
+    {
+      kind: 'talk',
+      start: '17:20',
+      end: '17:50',
+      room: 0,
+      topic: 'tooling',
+      advanced: true,
+      title: 'Comment compiler plus de 1000 applications Rust en 3 minutes',
+      speakers: ['Nils Ponsard'],
+      video: 'https://www.youtube.com/watch?v=RnRM8FDcgm8',
+    },
+    {
+      kind: 'talk',
+      start: '17:20',
+      end: '17:50',
+      room: 1,
+      topic: 'security',
+      title: 'Sécurisez vos prototypes avec OAuth2-Proxy, Anubis',
+      speakers: ['David Aparicio'],
+      video: 'https://www.youtube.com/watch?v=nRlq1KslW_4',
+    },
+
+    { kind: 'break', start: '18:00', end: '19:00', title: 'Scène ouverte' },
+  ],
+  sponsors: [
+    {
+      id: 'gold',
+      title: 'Sponsors Or',
+      sponsors: [
+        { name: 'Viveris', href: 'https://www.viveris.fr/', logo: '/images/sponsors/viveris.png' },
+      ],
+    },
+    {
+      id: 'silver',
+      title: 'Sponsors Argent',
+      sponsors: [
+        {
+          name: 'The Realm',
+          href: 'https://therealm.tech',
+          logo: '/images/sponsors/the_realm.png',
+        },
+        { name: 'ISDM', href: 'https://www.isdm.fr/', logo: '/images/sponsors/isdm.png' },
+        {
+          name: "Halles de l'IA",
+          href: 'https://isdm.umontpellier.fr/les-halles-de-lia/',
+          logo: '/images/sponsors/logo-halles.png',
+        },
+        {
+          name: 'Clever Cloud',
+          href: 'https://www.clever.cloud/fr/',
+          logo: '/images/sponsors/clevercloud.png',
+        },
+      ],
+    },
+    {
+      id: 'bronze',
+      title: 'Sponsors Bronze',
+      sponsors: [
+        {
+          name: 'Sunny Tech',
+          href: 'https://sunny-tech.io/',
+          logo: '/images/sponsors/sunnytech.png',
+        },
+        {
+          name: 'Grafana Labs',
+          href: 'https://grafana.com/',
+          logo: '/images/sponsors/grafana_labs.webp',
+        },
+        { name: 'CIRAD', href: 'https://www.cirad.fr/', logo: '/images/sponsors/cirad.webp' },
+        { name: 'Atos', href: 'https://atos.net/fr/', logo: '/images/sponsors/atos.webp' },
+        { name: 'La Poste', href: 'https://www.laposte.fr/', logo: '/images/sponsors/laposte.png' },
+      ],
+    },
+    {
+      id: 'academic',
+      title: 'Sponsors Universitaires',
+      sponsors: [
+        {
+          name: 'Polytech Montpellier',
+          href: 'https://www.polytech.umontpellier.fr/',
+          logo: '/images/sponsors/polytech_montpellier.webp',
+        },
+        {
+          name: 'Université de Montpellier',
+          href: 'https://www.umontpellier.fr/',
+          logo: '/images/sponsors/universite_de_montpellier.webp',
+        },
+      ],
+    },
+  ],
+  team: [
+    {
+      name: 'Auriane Pusel',
+      role: 'Communication',
+      linkedin: 'https://www.linkedin.com/in/auriane-pusel/',
+    },
+    {
+      name: 'Joris Vilardell',
+      role: 'Communication',
+      linkedin: 'https://www.linkedin.com/in/jorisvilardell/',
+    },
+    {
+      name: 'Liam Soulet',
+      role: 'Trésorerie, Sponsors',
+      linkedin: 'https://www.linkedin.com/in/liam-soulet/',
+    },
+    { name: 'Ruben Rouviere', role: 'Trésorerie' },
+    {
+      name: 'Damien Mathieu',
+      role: 'Trésorerie',
+      linkedin: 'https://www.linkedin.com/in/damien-mathieu1/',
+    },
+    {
+      name: 'Pierre-Louis Leclerc',
+      role: 'Speakers',
+      linkedin: 'https://www.linkedin.com/in/pierre-louis-leclerc/',
+    },
+    {
+      name: 'Thomas Rubini',
+      role: 'Speakers',
+      linkedin: 'https://www.linkedin.com/in/thomas-rubini-366a98236/',
+    },
+    {
+      name: 'Damien Rodriguez',
+      role: 'Speakers',
+      linkedin: 'https://www.linkedin.com/in/rodriguezdamien/',
+    },
+    {
+      name: 'Axel Frache',
+      role: 'Logistique',
+      linkedin: 'https://www.linkedin.com/in/axel-frache/',
+    },
+    {
+      name: 'Noa Despaux',
+      role: 'Logistique',
+      linkedin: 'https://www.linkedin.com/in/noa-despaux/',
+    },
+    {
+      name: 'Estelle Tamalet',
+      role: 'Logistique',
+      linkedin: 'https://www.linkedin.com/in/estelle-tamalet-634405206/',
+    },
+    {
+      name: 'Nathan Dilhan',
+      role: 'Logistique',
+      linkedin: 'https://www.linkedin.com/in/nathan-dilhan-69045622b/',
+    },
+    {
+      name: 'Evan Paillard',
+      role: 'Logistique',
+      linkedin: 'https://www.linkedin.com/in/evan-paillard1/',
+    },
+    {
+      name: 'Hugo Du Peloux',
+      role: 'Logistique',
+      linkedin: 'https://www.linkedin.com/in/hugo-du-peloux/',
+    },
+    {
+      name: 'Margarita Surina',
+      role: 'Logistique',
+      linkedin: 'https://www.linkedin.com/in/margarita-surina/',
+    },
+  ],
+};
+
+export default edition;

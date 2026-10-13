@@ -8,6 +8,7 @@ import SectionHeading from "../components/SectionHeading.astro";
 import SponsorTiers from "../components/SponsorTiers.astro";
 import { currentEdition } from "../data/editions";
 import { event, links, topics, venue } from "../data/site";
+import { url } from "../lib/url";
 
 const facts = [
   { value: `${event.edition}e`, label: "édition" },
@@ -98,7 +99,7 @@ const facts = [
           class="relative overflow-hidden rounded-[2rem] shadow-2xl shadow-plum-900/20 ring-1 ring-plum-900/10"
         >
           <img
-            src="/images/promodo4-3.webp"
+            src={url("/images/promodo4-3.webp")}
             alt="Un amphithéâtre de Polytech Montpellier rempli lors d'une conférence Polycloud"
             width="750"
             height="450"
@@ -368,13 +369,13 @@ const facts = [
       </div>
 
       <a
-        href="/images/plan.jpg"
+        href={url("/images/plan.jpg")}
         target="_blank"
         rel="noopener"
         class="group relative flex items-center overflow-hidden rounded-3xl bg-white p-3 ring-1 ring-plum-900/5"
       >
         <img
-          src="/images/plan.jpg"
+          src={url("/images/plan.jpg")}
           alt="Plan d'accès au bâtiment 31 du campus Triolet"
           loading="lazy"
           class="h-auto w-full rounded-2xl transition duration-500 group-hover:scale-[1.02]"

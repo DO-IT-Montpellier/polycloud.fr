@@ -3,6 +3,7 @@ import CloudMark from "./CloudMark.astro";
 import CloudSkyline from "./CloudSkyline.astro";
 import Icon from "./Icon.astro";
 import { event, links, nav, socials } from "../data/site";
+import { url } from "../lib/url";
 ---
 
 <footer class="mt-24">
@@ -12,7 +13,7 @@ import { event, links, nav, socials } from "../data/site";
       <div class="grid gap-12 lg:grid-cols-[1.2fr_1fr_1fr]">
         <div>
           <a
-            href="/"
+            href={url("/")}
             class="inline-flex items-center gap-3"
             aria-label="Polycloud - accueil"
           >
@@ -41,7 +42,7 @@ import { event, links, nav, socials } from "../data/site";
               nav.map((item) => (
                 <li>
                   <a
-                    href={item.href}
+                    href={url(item.href)}
                     class="text-white/80 transition hover:text-white"
                   >
                     {item.label}
@@ -51,7 +52,7 @@ import { event, links, nav, socials } from "../data/site";
             }
             <li>
               <a
-                href={links.pressKit}
+                href={url(links.pressKit)}
                 class="inline-flex items-center gap-1.5 text-white/80 transition hover:text-white"
               >
                 <Icon name="newspaper" class="size-4" />

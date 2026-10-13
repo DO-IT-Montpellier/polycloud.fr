@@ -11,11 +11,12 @@ import {
   talksOf,
 } from "../../data/editions";
 import { links } from "../../data/site";
+import { url } from "../../lib/url";
 
 const past = editions.filter((e) => e.year !== currentEdition.year);
 
 const editionHref = (year: number) =>
-  year === currentEdition.year ? "/programme" : `/previous-editions/${year}`;
+  url(year === currentEdition.year ? "/programme" : `/previous-editions/${year}`);
 
 // Speakers who came back for more than one edition, most loyal first
 const appearances = new Map<string, number[]>();

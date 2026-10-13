@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 
-type NavItem = { label: string; href: string };
+/** `href` is already resolved against the base path; `active` marks the current section. */
+type NavItem = { label: string; href: string; active: boolean };
 
 interface Props {
   items: NavItem[];
-  currentPath: string;
   cta: { label: string; href: string };
 }
 
-export default function MobileNav({ items, currentPath, cta }: Props) {
+export default function MobileNav({ items, cta }: Props) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function MobileNav({ items, currentPath, cta }: Props) {
         <nav aria-label='Navigation principale'>
           <ul className='flex flex-col gap-1'>
             {items.map((item) => {
-              const active = item.href === currentPath || currentPath.startsWith(`${item.href}/`);
+              const active = item.active;
               return (
                 <li key={item.href}>
                   <a

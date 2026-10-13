@@ -5,6 +5,7 @@ import EditionHero from "../../components/programme/EditionHero.astro";
 import ProgrammeView from "../../components/programme/ProgrammeView.astro";
 import { currentEdition as edition, formatDate } from "../../data/editions";
 import { event, links } from "../../data/site";
+import { url } from "../../lib/url";
 ---
 
 <Layout
@@ -13,7 +14,7 @@ import { event, links } from "../../data/site";
 >
   <EditionHero edition={edition} title={`Programme ${edition.year}`}>
     <a
-      href={`/programme/${edition.year}.ics`}
+      href={url(`/programme/${edition.year}.ics`)}
       download={`polycloud-${edition.year}.ics`}
       class="inline-flex items-center gap-2 rounded-full bg-plum-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-plum-600/25 transition hover:bg-plum-700"
     >
@@ -34,7 +35,7 @@ import { event, links } from "../../data/site";
       )
     }
     <a
-      href="/previous-editions"
+      href={url("/previous-editions")}
       class="group inline-flex items-center gap-2 rounded-full px-4 py-3 text-sm font-semibold text-plum-700 transition hover:bg-plum-100"
     >
       Éditions précédentes

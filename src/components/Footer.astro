@@ -1,0 +1,100 @@
+---
+import CloudMark from "./CloudMark.astro";
+import CloudSkyline from "./CloudSkyline.astro";
+import Icon from "./Icon.astro";
+import { event, links, nav, socials } from "../data/site";
+---
+
+<footer class="mt-24">
+  <CloudSkyline seed={42} />
+  <div class="bg-plum-600 text-white">
+    <div class="mx-auto max-w-7xl px-4 pt-6 pb-10 sm:px-6 lg:px-8">
+      <div class="grid gap-12 lg:grid-cols-[1.2fr_1fr_1fr]">
+        <div>
+          <a
+            href="/"
+            class="inline-flex items-center gap-3"
+            aria-label="Polycloud - accueil"
+          >
+            <CloudMark class="h-12 w-auto text-white" />
+            <span>
+              <span class="block text-2xl font-bold tracking-logo"
+                >POLYCLOUD</span
+              >
+              <span class="block text-sm text-white/75"
+                >You don't know the cloud</span
+              >
+            </span>
+          </a>
+          <p class="mt-6 max-w-sm text-sm leading-relaxed text-white/75">
+            Conférence tech autour du Cloud et du DevOps, organisée par les
+            étudiant·e·s de la filière DevOps de Polytech Montpellier.
+          </p>
+        </div>
+
+        <nav aria-label="Pied de page">
+          <h2 class="text-xs font-bold uppercase tracking-logo text-lilac-300">
+            Navigation
+          </h2>
+          <ul class="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+            {
+              nav.map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    class="text-white/80 transition hover:text-white"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+            <li>
+              <a
+                href={links.pressKit}
+                class="inline-flex items-center gap-1.5 text-white/80 transition hover:text-white"
+              >
+                <Icon name="newspaper" class="size-4" />
+                Kit de presse
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-logo text-lilac-300">
+            Suivez-nous
+          </h2>
+          <p class="mt-4 text-sm text-white/75">
+            Restez informé·e·s des dernières actualités de Polycloud.
+          </p>
+          <ul class="mt-4 grid grid-cols-2 gap-2">
+            {
+              socials.map((s) => (
+                <li>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${s.label} : ${s.handle}`}
+                    class="flex items-center gap-2 rounded-xl bg-white/10 px-3 py-2.5 text-sm transition hover:bg-white/20"
+                  >
+                    <Icon name={s.network} class="size-4.5 shrink-0" />
+                    <span class="truncate">{s.label}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      <div
+        class="mt-12 flex flex-col gap-2 border-t border-white/15 pt-6 text-xs text-white/60 sm:flex-row sm:justify-between"
+      >
+        <p>© Polycloud {event.year}</p>
+        <p>Polytech Montpellier · Université de Montpellier</p>
+      </div>
+    </div>
+  </div>
+</footer>

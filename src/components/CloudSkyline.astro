@@ -1,0 +1,61 @@
+---
+// Layered cloud skyline, as on the press kit header (public/press/header.png).
+// Puffs are generated from a fixed seed so the shape is stable across builds.
+interface Props {
+  class?: string;
+  backClass?: string;
+  frontClass?: string;
+  seed?: number;
+}
+
+const {
+  class: className = "",
+  backClass = "text-lilac-400",
+  frontClass = "text-plum-600",
+  seed = 7,
+} = Astro.props;
+
+// Wide enough that, at the rendered heights, the strip is always cropped on the sides
+// (more clouds on wide screens) rather than on the top (flattened puffs).
+const W = 4000;
+const H = 180;
+
+function rng(s: number) {
+  return () => {
+    s = (s * 16807) % 2147483647;
+    return (s - 1) / 2147483646;
+  };
+}
+
+function puffs(rand: () => number, baseline: number, minR: number, maxR: number) {
+  const out: { cx: number; cy: number; r: number }[] = [];
+  let x = -40;
+  while (x < W + 40) {
+    const r = minR + rand() * (maxR - minR);
+    out.push({ cx: x, cy: baseline + rand() * 14, r });
+    x += r * (0.8 + rand() * 0.6);
+  }
+  return out;
+}
+
+const rand = rng(seed);
+const back = puffs(rand, 84, 34, 66);
+const front = puffs(rand, 132, 30, 60);
+---
+
+<svg
+  class:list={["block w-full h-20 sm:h-28 md:h-36", className]}
+  viewBox={`0 0 ${W} ${H}`}
+  preserveAspectRatio="xMidYMax slice"
+  aria-hidden="true"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <g class={backClass} fill="currentColor">
+    {back.map((p) => <circle cx={p.cx} cy={p.cy} r={p.r} />)}
+    <rect x="0" y="92" width={W} height={H - 92} />
+  </g>
+  <g class={frontClass} fill="currentColor">
+    {front.map((p) => <circle cx={p.cx} cy={p.cy} r={p.r} />)}
+    <rect x="0" y="140" width={W} height={H - 140} />
+  </g>
+</svg>

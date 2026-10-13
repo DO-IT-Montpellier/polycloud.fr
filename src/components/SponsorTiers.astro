@@ -1,0 +1,48 @@
+---
+import type { SponsorTier } from "../data/editions";
+
+interface Props {
+  tiers: SponsorTier[];
+}
+
+const { tiers } = Astro.props;
+
+const sizing = {
+  gold: { grid: "grid-cols-1 max-w-xl", card: "h-44 sm:h-52 p-8", badge: "bg-amber-100 text-amber-800" },
+  silver: { grid: "grid-cols-2 lg:grid-cols-4", card: "h-32 sm:h-36 p-6", badge: "bg-slate-200 text-slate-700" },
+  bronze: { grid: "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5", card: "h-28 p-5", badge: "bg-orange-100 text-orange-800" },
+  academic: { grid: "grid-cols-2 max-w-xl", card: "h-28 p-5", badge: "bg-plum-100 text-plum-700" },
+} as const;
+---
+
+<div class="flex flex-col gap-14">
+  {
+    tiers.map((tier) => (
+      <section aria-labelledby={`tier-${tier.id}`} class="flex flex-col items-center">
+        <h3
+          id={`tier-${tier.id}`}
+          class:list={["rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-logo", sizing[tier.id].badge]}
+        >
+          {tier.title}
+        </h3>
+        <ul class:list={["mx-auto mt-6 grid w-full gap-4", sizing[tier.id].grid]}>
+          {tier.sponsors.map((s) => (
+            <li>
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class:list={[
+                  "group flex items-center justify-center rounded-3xl bg-white ring-1 ring-plum-900/5 transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-plum-600/10 hover:ring-plum-200",
+                  sizing[tier.id].card,
+                ]}
+              >
+                <img src={s.logo} alt={s.name} loading="lazy" class="max-h-full max-w-full object-contain" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</div>

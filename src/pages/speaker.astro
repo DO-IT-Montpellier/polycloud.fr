@@ -3,6 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import Icon from "../components/Icon.astro";
 import PageHero from "../components/PageHero.astro";
 import SectionHeading from "../components/SectionHeading.astro";
+import { cfpStatusOf, currentEdition as edition, formatDay } from "../data/editions";
+import { socials } from "../data/site";
 
 const formats = [
   {
@@ -47,7 +49,9 @@ const benefits = [
   },
 ];
 
-const cfpOpen = false;
+const cfp = edition.cfp;
+const cfpStatus = cfpStatusOf(edition) ?? "closed";
+const linkedin = socials.find((s) => s.network === "linkedin")!;
 ---
 
 <Layout
@@ -147,23 +151,55 @@ const cfpOpen = false;
             Envie de rejoindre l'aventure&nbsp;?
           </h2>
           <p class="mt-2 max-w-xl text-white/80">
-            Le Call for Papers (CFP) ouvre le <strong class="text-white"
-              >12 décembre</strong
-            > pour vous permettre de proposer votre talk et de partager votre passion&nbsp;!
+            {cfpStatus === "soon" && (
+              <>
+                Le Call for Papers (CFP) de l'édition {edition.year} ouvrira le{" "}
+                <strong class="text-white">{formatDay(cfp!.opens)}</strong>&nbsp;: préparez votre talk&nbsp;!
+              </>
+            )}
+            {cfpStatus === "open" && (
+              <>
+                Le Call for Papers (CFP) de l'édition {edition.year} est ouvert
+                {cfp!.closes && (
+                  <>
+                    {" "}jusqu'au <strong class="text-white">{formatDay(cfp!.closes)}</strong>
+                  </>
+                )}
+                &nbsp;: proposez votre talk et partagez votre passion&nbsp;!
+              </>
+            )}
+            {cfpStatus === "closed" && (
+              <>
+                Le Call for Papers (CFP) de l'édition {edition.year} est clos. L'ouverture du prochain sera annoncée sur
+                nos réseaux&nbsp;: suivez-nous pour ne pas le manquer&nbsp;!
+              </>
+            )}
           </p>
         </div>
       </div>
       {
-        cfpOpen ? (
+        cfpStatus === "open" && cfp?.url ? (
           <a
-            href="#"
+            href={cfp.url}
+            target="_blank"
+            rel="noopener noreferrer"
             class="shrink-0 rounded-full bg-white px-6 py-3 font-semibold text-plum-700 transition hover:bg-plum-50"
           >
             Proposer un talk
           </a>
+        ) : cfpStatus === "closed" ? (
+          <a
+            href={linkedin.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-plum-700 transition hover:bg-plum-50"
+          >
+            <Icon name="linkedin" class="size-5" />
+            Suivre sur LinkedIn
+          </a>
         ) : (
-          <span class="shrink-0 cursor-not-allowed rounded-full bg-white/15 px-6 py-3 font-semibold text-white/70 ring-1 ring-white/25">
-            CFP fermé
+          <span class="shrink-0 rounded-full bg-white/15 px-6 py-3 font-semibold text-white/80 ring-1 ring-white/25">
+            {cfpStatus === "soon" ? "Bientôt ouvert" : "CFP ouvert"}
           </span>
         )
       }

@@ -1,0 +1,91 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+
+const publisher = {
+  name: "DO IT Montpellier",
+  form: "Association loi 1901",
+  address: ["190 rue Claude Nougaro, Apt 601", "34090 Montpellier"],
+  rna: "W343034357",
+  email: "contact@doit-mtp.fr",
+  president: "Dorian RICHARD",
+};
+
+const host = {
+  name: "GitHub Pages",
+  company: "GitHub, Inc.",
+  address: ["88 Colin P. Kelly Jr. Street", "San Francisco, CA 94107", "États-Unis"],
+  href: "https://pages.github.com/",
+};
+---
+
+<Layout title="Mentions légales" description="Mentions légales, politique de confidentialité et cookies du site Polycloud.">
+  <PageHero eyebrow="Informations légales" title="Mentions légales" />
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="flex max-w-3xl flex-col gap-5">
+    <section aria-labelledby="editeur" class="rounded-3xl bg-white p-7 ring-1 ring-plum-900/5 sm:p-9">
+      <h2 id="editeur" class="text-xl font-bold text-plum-700">Éditeur du site</h2>
+      <dl class="mt-5 grid gap-x-8 gap-y-4 text-plum-950/80 sm:grid-cols-[11rem_1fr]">
+        <dt class="font-semibold text-plum-800">Raison sociale</dt>
+        <dd>{publisher.form} « {publisher.name} »</dd>
+
+        <dt class="font-semibold text-plum-800">Siège social</dt>
+        <dd>
+          <address class="not-italic">
+            {publisher.address.map((line) => <span class="block">{line}</span>)}
+          </address>
+        </dd>
+
+        <dt class="font-semibold text-plum-800">Numéro RNA</dt>
+        <dd>{publisher.rna}</dd>
+
+        <dt class="font-semibold text-plum-800">Directeur de la publication</dt>
+        <dd>{publisher.president}, président</dd>
+
+        <dt class="font-semibold text-plum-800">Contact</dt>
+        <dd>
+          <a
+            href={`mailto:${publisher.email}`}
+            class="font-semibold text-plum-600 underline decoration-lilac-400 decoration-2 underline-offset-4 hover:decoration-plum-600"
+            >{publisher.email}</a
+          >
+        </dd>
+      </dl>
+    </section>
+
+    <section aria-labelledby="hebergeur" class="rounded-3xl bg-white p-7 ring-1 ring-plum-900/5 sm:p-9">
+      <h2 id="hebergeur" class="text-xl font-bold text-plum-700">Hébergement</h2>
+      <p class="mt-5 leading-relaxed text-plum-950/80">
+        Le site est hébergé par{" "}
+        <a
+          href={host.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-semibold text-plum-600 underline decoration-lilac-400 decoration-2 underline-offset-4 hover:decoration-plum-600"
+          >{host.name}</a
+        >, un service de {host.company}
+      </p>
+      <address class="mt-3 text-plum-950/70 not-italic">
+        {host.address.map((line) => <span class="block">{line}</span>)}
+      </address>
+    </section>
+
+    <section aria-labelledby="confidentialite" class="rounded-3xl bg-white p-7 ring-1 ring-plum-900/5 sm:p-9">
+      <h2 id="confidentialite" class="text-xl font-bold text-plum-700">Politique de confidentialité</h2>
+      <div class="mt-5 space-y-4 leading-relaxed text-plum-950/80">
+        <p>Ce site ne collecte aucune donnée personnelle.</p>
+        <p>
+          Les talks que vous ajoutez à vos favoris sont enregistrés uniquement dans votre navigateur, sur votre appareil.
+          Ils ne nous sont jamais transmis, et vous pouvez les retirer à tout moment.
+        </p>
+      </div>
+    </section>
+
+    <section aria-labelledby="cookies" class="rounded-3xl bg-white p-7 ring-1 ring-plum-900/5 sm:p-9">
+      <h2 id="cookies" class="text-xl font-bold text-plum-700">Cookies</h2>
+      <p class="mt-5 leading-relaxed text-plum-950/80">Ce site n’utilise aucun cookie.</p>
+    </section>
+    </div>
+  </div>
+</Layout>

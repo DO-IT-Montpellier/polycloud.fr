@@ -6,14 +6,45 @@ import CloudSkyline from "../components/CloudSkyline.astro";
 import Icon from "../components/Icon.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import SponsorTiers from "../components/SponsorTiers.astro";
-import { currentEdition } from "../data/editions";
-import { event, links, topics, venue } from "../data/site";
+import {
+  currentEdition,
+  editions,
+  formatDate,
+  formatTime,
+  hoursOf,
+  numberOf,
+  phase,
+  talksOf,
+} from "../data/editions";
+import { links, socials, topics, venue } from "../data/site";
+import { mainCta } from "../lib/cta";
 import { url } from "../lib/url";
 
+const edition = currentEdition;
+const date = formatDate(edition.date);
+const day = date.toLowerCase();
+const ordinal = edition.ordinal.split(" ")[0].toLowerCase();
+const hours = hoursOf(edition);
+const cta = mainCta();
+const ctaIcon = phase === "upcoming" ? "ticket" : phase === "today" ? "calendar" : "play";
+const published = edition.sessions.length > 0;
+const replays = talksOf(edition).filter((t) => t.video).length;
+
+// Sponsors of the current edition, or of the latest one that has them while the new list isn't known
+const sponsorEdition = editions.find((e) => e.sponsors);
+
+// Most recent edition with replays, to point visitors to them
+const replayEdition = editions.find((e) => talksOf(e).some((t) => t.video));
+const replayHref =
+  replayEdition &&
+  (replayEdition === edition ? "/programme" : `/previous-editions/${replayEdition.year}`);
+
 const facts = [
-  { value: `${event.edition}e`, label: "édition" },
+  { value: `${numberOf(edition)}e`, label: "édition" },
   { value: "100 %", label: "gratuit" },
-  { value: "8h30–19h", label: "de talks et d'échanges" },
+  ...(hours
+    ? [{ value: `${formatTime(hours.start)}–${formatTime(hours.end)}`, label: "de talks et d'échanges" }]
+    : []),
   { value: "Cloud", label: "et DevOps au programme" },
 ];
 ---
@@ -33,7 +64,7 @@ const facts = [
           class="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-plum-700 ring-1 ring-plum-200"
         >
           <span class="size-2 rounded-full bg-lilac-400"></span>
-          Édition {event.year}
+          Édition {edition.year}
         </p>
 
         <h1
@@ -58,35 +89,41 @@ const facts = [
           <div class="flex items-center gap-2">
             <dt class="sr-only">Date</dt>
             <Icon name="calendar" class="size-5 text-lilac-400" />
-            <dd>{event.date}</dd>
+            <dd>{date}</dd>
           </div>
           <div class="flex items-center gap-2">
             <dt class="sr-only">Lieu</dt>
             <Icon name="map-pin" class="size-5 text-lilac-400" />
-            <dd>{event.venue}</dd>
+            <dd>{venue.name}</dd>
           </div>
-          <div class="flex items-center gap-2">
-            <dt class="sr-only">Horaires</dt>
-            <Icon name="clock" class="size-5 text-lilac-400" />
-            <dd>{event.hours.replace(" à ", " – ")}</dd>
-          </div>
+          {
+            hours && (
+              <div class="flex items-center gap-2">
+                <dt class="sr-only">Horaires</dt>
+                <Icon name="clock" class="size-5 text-lilac-400" />
+                <dd>
+                  {formatTime(hours.start)} – {formatTime(hours.end)}
+                </dd>
+              </div>
+            )
+          }
         </dl>
 
         <div class="mt-10 flex flex-wrap gap-3">
           {
-            event.ended ? (
-              <Button href={links.youtube} icon="play" external>
-                Voir les rediffusions
-              </Button>
-            ) : (
-              <Button href={links.tickets} icon="ticket" external>
-                Billetterie
+            cta && (
+              <Button href={cta.href} icon={ctaIcon} external={cta.external}>
+                {cta.label}
               </Button>
             )
           }
-          <Button href="/programme" variant="secondary" icon="calendar">
-            Voir le programme
-          </Button>
+          {
+            published && phase !== "today" && (
+              <Button href="/programme" variant="secondary" icon="calendar">
+                Voir le programme
+              </Button>
+            )
+          }
         </div>
       </div>
 
@@ -126,35 +163,79 @@ const facts = [
     <div
       class="relative mx-auto -mt-2 max-w-7xl px-4 pb-16 sm:-mt-6 sm:px-6 md:-mt-10 lg:px-8"
     >
-      {
-        event.ended && (
-          <div class="flex flex-col items-start gap-6 rounded-3xl bg-white/10 p-6 ring-1 ring-white/15 sm:p-8 md:flex-row md:items-center md:justify-between">
-            <div class="flex items-start gap-4">
-              <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-white text-plum-600">
-                <Icon name="youtube" class="size-6" />
-              </span>
+      <div class="flex flex-col items-start gap-6 rounded-3xl bg-white/10 p-6 ring-1 ring-white/15 sm:p-8 md:flex-row md:items-center md:justify-between">
+        <div class="flex items-start gap-4">
+          <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-white text-plum-600">
+            <Icon name={phase === "ended" ? "youtube" : "calendar"} class="size-6" />
+          </span>
+          {
+            phase === "upcoming" && (
               <div>
-                <p class="text-lg font-bold">
-                  Les conférences {event.year} sont terminées.
-                </p>
+                <p class="text-lg font-bold">Rendez-vous le {day}.</p>
                 <p class="mt-1 text-white/80">
-                  Ne soyez pas triste, toutes les rediffusions sont disponibles
-                  sur notre chaîne YouTube :)
+                  {edition.tickets
+                    ? `L'entrée est gratuite, sur inscription. Réservez votre place pour assister aux talks à ${venue.name}.`
+                    : `La billetterie ouvrira prochainement : suivez-nous pour être prévenu·e·s.`}
                 </p>
               </div>
-            </div>
-            <Button
-              href={links.youtube}
-              variant="light"
-              icon="play"
-              external
-              class="shrink-0"
-            >
-              Voir les rediffusions
-            </Button>
-          </div>
-        )
-      }
+            )
+          }
+          {
+            phase === "today" && (
+              <div>
+                <p class="text-lg font-bold">C'est aujourd'hui&nbsp;!</p>
+                <p class="mt-1 text-white/80">
+                  Rendez-vous à {venue.name}
+                  {hours && ` dès ${formatTime(hours.start)}`}. Retrouvez les talks et les salles dans le programme du jour.
+                </p>
+              </div>
+            )
+          }
+          {
+            phase === "ended" && (
+              <div>
+                <p class="text-lg font-bold">L'édition {edition.year} est terminée, merci à toutes et à tous&nbsp;!</p>
+                <p class="mt-1 text-white/80">
+                  {replays > 0 && "Les rediffusions des talks sont disponibles sur YouTube. "}
+                  La prochaine édition sera annoncée prochainement&nbsp;: suivez-nous pour ne rien manquer.
+                </p>
+              </div>
+            )
+          }
+        </div>
+        <div class="flex shrink-0 flex-wrap items-center gap-2">
+          {
+            phase === "ended" ? (
+              <>
+                {replays > 0 && (
+                  <Button href={links.youtube} variant="light" icon="play" external>
+                    Voir les rediffusions
+                  </Button>
+                )}
+                {socials
+                  .filter((s) => s.network !== "youtube")
+                  .map((s) => (
+                    <a
+                      href={s.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Suivre Polycloud sur ${s.label}`}
+                      class="grid size-11 place-items-center rounded-full ring-1 ring-white/40 transition hover:bg-white/10 hover:ring-white"
+                    >
+                      <Icon name={s.network} class="size-5" />
+                    </a>
+                  ))}
+              </>
+            ) : (
+              cta && (
+                <Button href={cta.href} variant="light" icon={ctaIcon} external={cta.external}>
+                  {cta.label}
+                </Button>
+              )
+            )
+          }
+        </div>
+      </div>
 
       <dl class="mt-12 grid grid-cols-2 gap-8 text-center md:grid-cols-4">
         {
@@ -183,24 +264,31 @@ const facts = [
       />
       <div class="space-y-5 text-lg leading-relaxed text-plum-950/75">
         <p>
-          <strong class="font-semibold text-plum-700">Polycloud</strong> est une journée
-          de conférences gratuites qui tiendra sa <strong
-            class="font-semibold text-plum-700"
-            >{event.editionLabel} édition</strong
-          > le {event.date.toLowerCase()} à{" "}
-          {event.venue}. Le but&nbsp;: faire découvrir le monde du cloud et du
-          DevOps, au travers de conférences et d'activités pratiques.
+          <strong class="font-semibold text-plum-700">Polycloud</strong> est une journée de conférences gratuites
+          {phase === "upcoming" && " qui tiendra sa "}
+          {phase === "today" && " qui tient aujourd'hui sa "}
+          {phase === "ended" && " dont la "}
+          <strong class="font-semibold text-plum-700">{ordinal} édition</strong>
+          {phase === "upcoming" && ` le ${day} à ${venue.name}.`}
+          {phase === "today" && ` à ${venue.name}.`}
+          {phase === "ended" && ` s'est tenue le ${day} à ${venue.name}.`}
+          {" "}Le but&nbsp;: faire découvrir le monde du cloud et du DevOps, au travers de conférences et d'activités
+          pratiques.
         </p>
-        <p>
-          Retrouvez les replays des talks 2025 sur{" "}
-          <a
-            href={links.replays2025}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="font-semibold text-plum-600 underline decoration-lilac-400 decoration-2 underline-offset-4 hover:decoration-plum-600"
-            >notre playlist YouTube</a
-          > pour ne rien manquer de cette aventure enrichissante.
-        </p>
+        {
+          replayEdition && replayHref && (
+            <p>
+              Retrouvez les rediffusions des talks {replayEdition.year} directement dans{" "}
+              <a
+                href={url(replayHref)}
+                class="font-semibold text-plum-600 underline decoration-lilac-400 decoration-2 underline-offset-4 hover:decoration-plum-600"
+              >
+                le programme
+              </a>
+              , pour ne rien manquer de cette aventure.
+            </p>
+          )
+        }
       </div>
     </div>
 
@@ -261,9 +349,13 @@ const facts = [
             </p>
           </SectionHeading>
           <div class="mt-8 flex flex-wrap gap-3">
-            <Button href="/programme" variant="light" icon="calendar">
-              Voir le programme
-            </Button>
+            {
+              published && (
+                <Button href="/programme" variant="light" icon="calendar">
+                  Voir le programme
+                </Button>
+              )
+            }
             <Button href="/previous-editions" variant="ghost-light">
               Éditions précédentes
               <Icon
@@ -291,24 +383,20 @@ const facts = [
 
   <!-- Sponsors -->
   {
-    currentEdition.sponsors && (
-      <section
-        id="sponsors"
-        class="mx-auto max-w-7xl px-4 pt-24 sm:px-6 lg:px-8"
-      >
+    sponsorEdition?.sponsors && (
+      <section id="sponsors" class="mx-auto max-w-7xl px-4 pt-24 sm:px-6 lg:px-8">
         <SectionHeading
-          eyebrow="Ils nous soutiennent"
+          eyebrow={sponsorEdition === edition ? "Ils nous soutiennent" : `Ils nous ont soutenus en ${sponsorEdition.year}`}
           title="Nos sponsors"
           align="center"
           class="mb-12"
         >
           <p class="mt-4 text-plum-950/70">
-            Polycloud est une conférence gratuite, organisée par des
-            étudiant·e·s. Elle n'existerait pas sans le soutien de ces
-            entreprises et institutions. Merci à elles&nbsp;!
+            Polycloud est une conférence gratuite, organisée par des étudiant·e·s. Elle n'existerait pas sans le soutien
+            de ces entreprises et institutions. Merci à elles&nbsp;!
           </p>
         </SectionHeading>
-        <SponsorTiers tiers={currentEdition.sponsors} />
+        <SponsorTiers tiers={sponsorEdition.sponsors} />
       </section>
     )
   }
@@ -320,11 +408,21 @@ const facts = [
   >
     <SectionHeading eyebrow="Accès" title="Accéder à la conférence">
       <p class="mt-5 text-lg leading-relaxed text-plum-950/75">
-        La conférence se tient le <strong class="font-semibold text-plum-700"
-          >{event.date.toLowerCase()}</strong
-        > de{" "}
-        {event.hours} dans les locaux de {event.venue}. Pensez à vous munir du
-        billet reçu lors de votre inscription.
+        {phase === "upcoming" && (
+          <>
+            La conférence se tient le <strong class="font-semibold text-plum-700">{day}</strong>
+            {hours && ` de ${formatTime(hours.start)} à ${formatTime(hours.end)}`} dans les locaux de {venue.name}.
+            {edition.tickets && " Pensez à vous munir du billet reçu lors de votre inscription."}
+          </>
+        )}
+        {phase === "today" && (
+          <>
+            C'est <strong class="font-semibold text-plum-700">aujourd'hui</strong>
+            {hours && `, de ${formatTime(hours.start)} à ${formatTime(hours.end)},`} dans les locaux de {venue.name}.
+            {edition.tickets && " Pensez à vous munir du billet reçu lors de votre inscription."}
+          </>
+        )}
+        {phase === "ended" && <>La dernière édition s'est déroulée dans les locaux de {venue.name}. Voici comment venir.</>}
       </p>
     </SectionHeading>
 

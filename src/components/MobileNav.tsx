@@ -5,7 +5,7 @@ type NavItem = { label: string; href: string; active: boolean };
 
 interface Props {
   items: NavItem[];
-  cta: { label: string; href: string };
+  cta: { label: string; href: string; external: boolean } | null;
 }
 
 export default function MobileNav({ items, cta }: Props) {
@@ -71,14 +71,17 @@ export default function MobileNav({ items, cta }: Props) {
             })}
           </ul>
         </nav>
-        <a
-          href={cta.href}
-          target='_blank'
-          rel='noopener noreferrer'
-          className='mt-8 flex items-center justify-center rounded-full bg-plum-600 px-5 py-4 font-semibold text-white'
-        >
-          {cta.label}
-        </a>
+        {cta && (
+          <a
+            href={cta.href}
+            target={cta.external ? '_blank' : undefined}
+            rel={cta.external ? 'noopener noreferrer' : undefined}
+            onClick={() => setOpen(false)}
+            className='mt-8 flex items-center justify-center rounded-full bg-plum-600 px-5 py-4 font-semibold text-white'
+          >
+            {cta.label}
+          </a>
+        )}
       </div>
     </div>
   );

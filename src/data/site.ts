@@ -1,17 +1,5 @@
-export const event = {
-  edition: 5,
-  editionLabel: 'cinquième',
-  year: 2026,
-  date: 'Samedi 6 juin 2026',
-  hours: '8h30 à 19h',
-  venue: 'Polytech Montpellier',
-  ended: true,
-};
-
 export const links = {
-  tickets: 'https://www.billetweb.fr/polycloud-2026',
   youtube: 'https://www.youtube.com/@Polycloud_mtp',
-  replays2025: 'https://urls.fr/rgQtwp',
   maps: 'https://maps.app.goo.gl/ycGQfaiXGvp1fsr86',
   pressKit: '/files/polycloud_press_kit.zip',
   devopsCourse: 'https://www.polytech.umontpellier.fr/formation/cycle-ingenieur/devops',

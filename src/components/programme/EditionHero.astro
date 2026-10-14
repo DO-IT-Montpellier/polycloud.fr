@@ -2,7 +2,7 @@
 import CloudMark from "../CloudMark.astro";
 import Icon from "../Icon.astro";
 import { type Edition, formatDate } from "../../data/editions";
-import { event } from "../../data/site";
+import { venue } from "../../data/site";
 
 interface Props {
   edition: Edition;
@@ -26,7 +26,7 @@ const { edition, title } = Astro.props;
       </span>
       <span class="inline-flex items-center gap-2">
         <Icon name="map-pin" class="size-5 text-lilac-400" />
-        {event.venue}
+        {venue.name}
       </span>
     </p>
 

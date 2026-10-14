@@ -2,7 +2,8 @@
 import CloudMark from "./CloudMark.astro";
 import CloudSkyline from "./CloudSkyline.astro";
 import Icon from "./Icon.astro";
-import { event, links, nav, socials } from "../data/site";
+import { currentEdition } from "../data/editions";
+import { links, nav, socials } from "../data/site";
 import { url } from "../lib/url";
 ---
 
@@ -93,7 +94,7 @@ import { url } from "../lib/url";
       <div
         class="mt-12 flex flex-col gap-2 border-t border-white/15 pt-6 text-xs text-white/60 sm:flex-row sm:justify-between"
       >
-        <p>© Polycloud {event.year}</p>
+        <p>© Polycloud {currentEdition.year}</p>
         <p>Polytech Montpellier · Université de Montpellier</p>
       </div>
     </div>

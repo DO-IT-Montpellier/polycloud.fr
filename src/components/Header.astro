@@ -1,8 +1,12 @@
 ---
 import CloudMark from "./CloudMark.astro";
 import MobileNav from "./MobileNav";
-import { event, links, nav } from "../data/site";
+import { nav } from "../data/site";
+import { mainCta } from "../lib/cta";
 import { route, url } from "../lib/url";
+
+const main = mainCta();
+const cta = main && { ...main, href: url(main.href) };
 
 const currentPath = route(Astro.url.pathname);
 
@@ -69,33 +73,18 @@ const items = nav.map((item) => ({
 
     <div class="flex items-center gap-2">
       {
-        event.ended ? (
+        cta && (
           <a
-            href={links.youtube}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={cta.href}
+            target={cta.external ? "_blank" : undefined}
+            rel={cta.external ? "noopener noreferrer" : undefined}
             class="hidden rounded-full bg-plum-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-plum-700 sm:inline-flex"
           >
-            Rediffusions
-          </a>
-        ) : (
-          <a
-            href={links.tickets}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hidden rounded-full bg-plum-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-plum-700 sm:inline-flex"
-          >
-            Billetterie
+            {cta.shortLabel}
           </a>
         )
       }
-      <MobileNav
-        client:media="(max-width: 1023px)"
-        items={items}
-        cta={event.ended
-          ? { label: "Voir les rediffusions", href: links.youtube }
-          : { label: "Billetterie", href: links.tickets }}
-      />
+      <MobileNav client:media="(max-width: 1023px)" items={items} cta={cta} />
     </div>
   </div>
 </header>

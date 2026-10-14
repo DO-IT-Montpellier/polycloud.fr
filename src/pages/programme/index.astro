@@ -3,9 +3,12 @@ import Layout from "../../layouts/Layout.astro";
 import Icon from "../../components/Icon.astro";
 import EditionHero from "../../components/programme/EditionHero.astro";
 import ProgrammeView from "../../components/programme/ProgrammeView.astro";
-import { currentEdition as edition, formatDate } from "../../data/editions";
-import { event, links } from "../../data/site";
+import { currentEdition as edition, formatDate, phase, talksOf } from "../../data/editions";
+import { links } from "../../data/site";
 import { url } from "../../lib/url";
+
+const published = edition.sessions.length > 0;
+const replays = talksOf(edition).filter((t) => t.video).length;
 ---
 
 <Layout
@@ -13,16 +16,20 @@ import { url } from "../../lib/url";
   description={`Programme de Polycloud ${edition.year}, ${formatDate(edition.date).toLowerCase()} : talks, speakers et horaires.`}
 >
   <EditionHero edition={edition} title={`Programme ${edition.year}`}>
-    <a
-      href={url(`/programme/${edition.year}.ics`)}
-      download={`polycloud-${edition.year}.ics`}
-      class="inline-flex items-center gap-2 rounded-full bg-plum-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-plum-600/25 transition hover:bg-plum-700"
-    >
-      <Icon name="calendar-plus" class="size-4.5" />
-      Ajouter à mon agenda
-    </a>
     {
-      event.ended && (
+      published && phase !== "ended" && (
+        <a
+          href={url(`/programme/${edition.year}.ics`)}
+          download={`polycloud-${edition.year}.ics`}
+          class="inline-flex items-center gap-2 rounded-full bg-plum-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-plum-600/25 transition hover:bg-plum-700"
+        >
+          <Icon name="calendar-plus" class="size-4.5" />
+          Ajouter à mon agenda
+        </a>
+      )
+    }
+    {
+      replays > 0 && (
         <a
           href={links.youtube}
           target="_blank"
@@ -44,6 +51,14 @@ import { url } from "../../lib/url";
   </EditionHero>
 
   <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <ProgrammeView edition={edition} />
+    {
+      published ? (
+        <ProgrammeView edition={edition} />
+      ) : (
+        <p class="rounded-3xl bg-white p-10 text-center text-lg text-plum-950/70 ring-1 ring-plum-900/5">
+          Le programme de cette édition sera publié prochainement.
+        </p>
+      )
+    }
   </section>
 </Layout>

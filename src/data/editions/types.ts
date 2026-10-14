@@ -62,6 +62,11 @@ export type Edition = {
   /** false when the original programme did not name the rooms */
   roomsNamed: boolean;
   notes?: string[];
+  /** Ticketing page. Shown while the edition is upcoming. */
+  tickets?: string;
+  /** Call for papers. Dates are ISO (YYYY-MM-DD); `url` is the submission form. */
+  cfp?: { opens: string; closes?: string; url?: string };
+  /** Empty until the programme is published (e.g. an edition announced with only its date). */
   sessions: Session[];
   /** Omitted when we don't have the data for that edition. */
   sponsors?: SponsorTier[];

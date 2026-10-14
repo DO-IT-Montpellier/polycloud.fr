@@ -7,9 +7,46 @@ import e2026 from './2026';
 
 export * from './types';
 
-/** Newest first. */
+/** Newest first. The first one is the edition the site is about: add the next one on top to switch to it. */
 export const editions: Edition[] = [e2026, e2025, e2024, e2023, e2022];
 export const currentEdition = editions[0];
+
+/**
+ * Today in Paris, as YYYY-MM-DD. Evaluated at build time: the site is rebuilt daily to stay current.
+ * Set POLYCLOUD_TODAY=YYYY-MM-DD to preview the site as of another day.
+ */
+export const today =
+  process.env.POLYCLOUD_TODAY ||
+  new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris' }).format(new Date());
+
+export type Phase = 'upcoming' | 'today' | 'ended';
+
+export const phaseOf = (e: Edition): Phase =>
+  today < e.date ? 'upcoming' : today === e.date ? 'today' : 'ended';
+
+/** Where the current edition stands, which drives the wording across the site. */
+export const phase = phaseOf(currentEdition);
+
+/** 1 for the first edition, counting every edition listed. */
+export const numberOf = (e: Edition) => editions.length - editions.indexOf(e);
+
+/** First and last time of the day, or null while the programme isn't published. */
+export function hoursOf(e: Edition) {
+  if (e.sessions.length === 0) return null;
+  const starts = e.sessions.map((s) => s.start).sort();
+  const ends = e.sessions.map((s) => s.end).sort();
+  return { start: starts[0], end: ends[ends.length - 1] };
+}
+
+export type CfpStatus = 'soon' | 'open' | 'closed';
+
+/** Null when the edition has no CFP data. Closes on its closing date, or at the latest once the event starts. */
+export function cfpStatusOf(e: Edition): CfpStatus | null {
+  if (!e.cfp) return null;
+  if (today < e.cfp.opens) return 'soon';
+  if (phaseOf(e) !== 'upcoming' || (e.cfp.closes && today > e.cfp.closes)) return 'closed';
+  return 'open';
+}
 
 export const getEdition = (year: number) => editions.find((e) => e.year === year);
 
@@ -33,6 +70,15 @@ export const formatDate = (iso: string) =>
   })
     .format(new Date(`${iso}T12:00:00Z`))
     .replace(/^./, (c) => c.toUpperCase());
+
+/** "2025-12-12" -> "12 décembre 2025" */
+export const formatDay = (iso: string) =>
+  new Intl.DateTimeFormat('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'Europe/Paris',
+  }).format(new Date(`${iso}T12:00:00Z`));
 
 export type Row = { start: string; plenary: Session | null; parallel: Talk[] };
 

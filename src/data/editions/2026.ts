@@ -7,6 +7,8 @@ const edition: Edition = {
   rooms: ['Amphi Peytavin', 'Salle SC001'],
   roomsNamed: true,
   notes: ['Les conférences sont intégralement en français.'],
+  tickets: 'https://www.billetweb.fr/polycloud-2026',
+  cfp: { opens: '2025-12-12' },
   sessions: [
     { kind: 'break', start: '08:30', end: '09:00', title: 'Accueil / petit déjeuner' },
     { kind: 'break', start: '09:00', end: '09:10', title: 'Ouverture' },

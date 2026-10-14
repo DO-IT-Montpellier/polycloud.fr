@@ -14,6 +14,9 @@ import { links } from "../../data/site";
 import { url } from "../../lib/url";
 
 const past = editions.filter((e) => e.year !== currentEdition.year);
+const firstYear = Math.min(...editions.map((e) => e.year));
+const pastCount =
+  ["Une", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept", "Huit", "Neuf", "Dix"][past.length - 1] ?? String(past.length);
 
 const editionHref = (year: number) =>
   url(year === currentEdition.year ? "/programme" : `/previous-editions/${year}`);
@@ -30,11 +33,11 @@ const returning = [...appearances]
 
 <Layout
   title="Éditions antérieures"
-  description="Les programmes des précédentes éditions de Polycloud, depuis 2022."
+  description={`Les programmes des précédentes éditions de Polycloud, depuis ${firstYear}.`}
 >
-  <PageHero eyebrow="Depuis 2022" title="Éditions antérieures">
+  <PageHero eyebrow={`Depuis ${firstYear}`} title="Éditions antérieures">
     <p>
-      Quatre éditions avant celle-ci, et une communauté qui grandit chaque
+      {pastCount} édition{past.length > 1 && "s"} avant celle de {currentEdition.year}, et une communauté qui grandit chaque
       année. Parcourez les programmes passés, et retrouvez les rediffusions sur
       notre chaîne YouTube.
     </p>

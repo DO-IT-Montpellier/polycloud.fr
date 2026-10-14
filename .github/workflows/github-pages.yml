@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: ['main']
+  # Daily rebuild: the site's wording follows the event date (before / on the day / after),
+  # which is computed at build time. 3:00 UTC is early morning in Paris.
+  schedule:
+    - cron: '0 3 * * *'
   workflow_dispatch:
 
 permissions:

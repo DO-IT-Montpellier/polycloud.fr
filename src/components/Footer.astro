@@ -94,8 +94,13 @@ import { url } from "../lib/url";
       <div
         class="mt-12 flex flex-col gap-2 border-t border-white/15 pt-6 text-xs text-white/60 sm:flex-row sm:justify-between"
       >
-        <p>© Polycloud {currentEdition.year}</p>
-        <p>Polytech Montpellier · Université de Montpellier</p>
+        <p>
+          © Polycloud {currentEdition.year} ·{" "}
+          <a href={url("/mentions-legales")} class="underline-offset-4 hover:text-white hover:underline">
+            Mentions légales
+          </a>
+        </p>
+        <p>DO IT Montpellier</p>
       </div>
     </div>
   </div>

@@ -3,7 +3,7 @@ import { links } from '../data/site';
 
 export type Cta = { label: string; shortLabel: string; href: string; external: boolean };
 
-/** The main action of the moment, shared by the header, the mobile menu and the home hero. Internal hrefs are not prefixed with the base path. */
+/** The main action of the moment, shared by the header, the mobile menu and the home hero. */
 export function mainCta(): Cta | null {
   if (phase === 'upcoming') {
     return currentEdition.tickets

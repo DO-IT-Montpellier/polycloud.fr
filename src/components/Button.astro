@@ -1,6 +1,5 @@
 ---
 import Icon, { type IconName } from "./Icon.astro";
-import { url } from "../lib/url";
 
 interface Props {
   href: string;
@@ -22,7 +21,7 @@ const variants = {
 ---
 
 <a
-  href={url(href)}
+  href={href}
   target={external ? "_blank" : undefined}
   rel={external ? "noopener noreferrer" : undefined}
   download={download || undefined}

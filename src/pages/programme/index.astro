@@ -5,7 +5,6 @@ import EditionHero from "../../components/programme/EditionHero.astro";
 import ProgrammeView from "../../components/programme/ProgrammeView.astro";
 import { currentEdition as edition, formatDate, phase, talksOf } from "../../data/editions";
 import { links } from "../../data/site";
-import { url } from "../../lib/url";
 
 const published = edition.sessions.length > 0;
 const replays = talksOf(edition).filter((t) => t.video).length;
@@ -19,7 +18,7 @@ const replays = talksOf(edition).filter((t) => t.video).length;
     {
       published && phase !== "ended" && (
         <a
-          href={url(`/programme/${edition.year}.ics`)}
+          href={`/programme/${edition.year}.ics`}
           download={`polycloud-${edition.year}.ics`}
           class="inline-flex items-center gap-2 rounded-full bg-plum-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-plum-600/25 transition hover:bg-plum-700"
         >
@@ -42,7 +41,7 @@ const replays = talksOf(edition).filter((t) => t.video).length;
       )
     }
     <a
-      href={url("/previous-editions")}
+      href={"/previous-editions"}
       class="group inline-flex items-center gap-2 rounded-full px-4 py-3 text-sm font-semibold text-plum-700 transition hover:bg-plum-100"
     >
       Éditions précédentes

@@ -4,7 +4,7 @@
 
 Website of **Polycloud**, the free Cloud & DevOps conference organised every year by the DevOps students of Polytech Montpellier.
 
-Live at **<https://do-it-montpellier.github.io/polycloud.fr/>**.
+Live at **<https://polycloud.fr>**.
 
 ## Tech stack
 
@@ -21,7 +21,7 @@ You need Node.js 22+ and [pnpm](https://pnpm.io).
 
 ```sh
 pnpm install
-pnpm dev        # http://localhost:4321/polycloud.fr/
+pnpm dev        # http://localhost:4321/
 ```
 
 | Command        | Action                             |
@@ -31,8 +31,6 @@ pnpm dev        # http://localhost:4321/polycloud.fr/
 | `pnpm preview` | Serve the production build locally |
 | `pnpm format`  | Format the code with oxfmt         |
 
-> The site is served under `/polycloud.fr/`, so `http://localhost:4321/` alone shows a 404.
->
 > If the dev server throws `Cannot read properties of null (reading 'useState')` after a config change, restart it with `pnpm dev --force` and hard-reload the page.
 
 ## Project structure
@@ -43,7 +41,7 @@ src/
 │   ├── editions/      One file per edition: programme, replays, sponsors, team, tickets, CFP
 │   └── site.ts        Things that don't change between editions: links, nav, socials, venue
 ├── lib/
-│   ├── url.ts         url() helper for the base path
+│   ├── url.ts         route() helper for pathnames
 │   └── cta.ts         Main call to action, depending on the event phase
 ├── components/        Layout pieces and UI components
 ├── pages/             One file per route
@@ -81,20 +79,6 @@ The fields:
 
 - **`sessions`**: the programme. Each one is either a `break` or a `talk`. A talk with a `room` index runs in parallel; a talk without one is shown across all rooms. Talks can also have a `topic`, `advanced: true`, `keynote: true`, and a YouTube `video` link once the replay is online.
 - **`sponsors`** and **`team`**: optional. Leave them out when you don't have the data, and the matching sections are hidden.
-
-### Links and images
-
-The site is served from a sub-path (`base: '/polycloud.fr'` in `astro.config.mjs`), and Astro does not prefix links for you. Wrap every internal link or asset path in `url()`:
-
-```astro
----
-import { url } from '../lib/url';
----
-<a href={url('/programme')}>Programme</a>
-<img src={url('/images/plan.jpg')} alt="…" />
-```
-
-The `Button` component calls `url()` itself, so you can pass it plain paths.
 
 ## Event phase and `POLYCLOUD_TODAY`
 

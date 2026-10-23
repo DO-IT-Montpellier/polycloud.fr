@@ -9,7 +9,6 @@ import EditionHero from "../../components/programme/EditionHero.astro";
 import ProgrammeView from "../../components/programme/ProgrammeView.astro";
 import { currentEdition, editions, formatDate, talksOf } from "../../data/editions";
 import { links } from "../../data/site";
-import { url } from "../../lib/url";
 
 // The current edition is the main content of the site; only past ones get a page here
 const past = editions.filter((e) => e.year !== currentEdition.year);
@@ -31,7 +30,7 @@ const replays = talks.filter((t) => t.video).length;
   <EditionHero edition={edition} title={`Polycloud ${edition.year}`}>
     <nav slot="before" aria-label="Éditions précédentes" class="mb-8 flex flex-wrap items-center gap-2 print:hidden">
       <a
-        href={url("/previous-editions")}
+        href={"/previous-editions"}
         class="group mr-2 inline-flex items-center gap-1.5 text-sm font-semibold text-plum-600 hover:text-plum-800"
       >
         <Icon name="arrow-right" class="size-4 rotate-180 transition group-hover:-translate-x-0.5" />
@@ -42,7 +41,7 @@ const replays = talks.filter((t) => t.video).length;
           past.map((e) => (
             <li>
               <a
-                href={url(`/previous-editions/${e.year}`)}
+                href={`/previous-editions/${e.year}`}
                 aria-current={e.year === edition.year ? "page" : undefined}
                 class:list={[
                   "inline-flex rounded-full px-4 py-1.5 text-sm font-bold transition",

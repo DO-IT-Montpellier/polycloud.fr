@@ -3,17 +3,16 @@ import CloudMark from "./CloudMark.astro";
 import MobileNav from "./MobileNav";
 import { nav } from "../data/site";
 import { mainCta } from "../lib/cta";
-import { route, url } from "../lib/url";
+import { route } from "../lib/url";
 
-const main = mainCta();
-const cta = main && { ...main, href: url(main.href) };
+const cta = mainCta();
 
 const currentPath = route(Astro.url.pathname);
 
 // Resolved once for both the desktop nav and the mobile menu
 const items = nav.map((item) => ({
   ...item,
-  href: url(item.href),
+  href: item.href,
   active: item.href === currentPath || currentPath.startsWith(`${item.href}/`),
 }));
 ---
@@ -25,7 +24,7 @@ const items = nav.map((item) => ({
     class="mx-auto flex h-18 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8"
   >
     <a
-      href={url("/")}
+      href={"/"}
       class="relative z-50 flex items-center gap-2.5 text-plum-600"
       aria-label="Polycloud - accueil"
     >
@@ -90,12 +89,12 @@ const items = nav.map((item) => ({
 </header>
 
 <script>
-  import { route, url } from "../lib/url";
+  import { route } from "../lib/url";
 
   // On the home page, links to "/" scroll back up instead of reloading, and drop any #anchor from the URL
   document.addEventListener("click", (e) => {
     const link = (e.target as HTMLElement).closest<HTMLAnchorElement>(
-      `a[href="${url("/")}"]`,
+      `a[href="${"/"}"]`,
     );
     if (
       !link ||
@@ -108,6 +107,6 @@ const items = nav.map((item) => ({
       return;
     e.preventDefault();
     window.scrollTo({ top: 0 });
-    if (location.hash) history.pushState(null, "", url("/"));
+    if (location.hash) history.pushState(null, "", "/");
   });
 </script>

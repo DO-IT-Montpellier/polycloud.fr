@@ -24,12 +24,12 @@ pnpm install
 pnpm dev        # http://localhost:4321/polycloud.fr/
 ```
 
-| Command        | Action                                       |
-| :------------- | :------------------------------------------- |
-| `pnpm dev`     | Start the dev server                         |
-| `pnpm build`   | Build the site to `./dist/`                  |
-| `pnpm preview` | Serve the production build locally           |
-| `pnpm format`  | Format the code with oxfmt                   |
+| Command        | Action                             |
+| :------------- | :--------------------------------- |
+| `pnpm dev`     | Start the dev server               |
+| `pnpm build`   | Build the site to `./dist/`        |
+| `pnpm preview` | Serve the production build locally |
+| `pnpm format`  | Format the code with oxfmt         |
 
 > The site is served under `/polycloud.fr/`, so `http://localhost:4321/` alone shows a 404.
 >
@@ -100,11 +100,11 @@ The `Button` component calls `url()` itself, so you can pass it plain paths.
 
 The wording of the site follows the date of the current edition:
 
-| Phase      | When                  | Main call to action | Examples                                            |
-| :--------- | :-------------------- | :------------------ | :-------------------------------------------------- |
-| `upcoming` | before the event      | Billetterie         | "qui tiendra sa…", "Ajouter à mon agenda"           |
-| `today`    | on the day            | Programme du jour   | "C'est aujourd'hui !"                               |
-| `ended`    | after the event       | Rediffusions        | "s'est tenue le…", "la prochaine édition sera annoncée" |
+| Phase      | When             | Main call to action | Examples                                                |
+| :--------- | :--------------- | :------------------ | :------------------------------------------------------ |
+| `upcoming` | before the event | Billetterie         | "qui tiendra sa…", "Ajouter à mon agenda"               |
+| `today`    | on the day       | Programme du jour   | "C'est aujourd'hui !"                                   |
+| `ended`    | after the event  | Rediffusions        | "s'est tenue le…", "la prochaine édition sera annoncée" |
 
 The CFP block on the speaker page also says whether the CFP will open soon, is open, or is closed, based on `cfp.opens` and `cfp.closes`.
 

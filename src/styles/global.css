@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif;
 
   --color-plum-50: #faf5fb;
   --color-plum-100: #f3e8f5;

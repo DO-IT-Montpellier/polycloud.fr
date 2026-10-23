@@ -7,11 +7,26 @@ export type Cta = { label: string; shortLabel: string; href: string; external: b
 export function mainCta(): Cta | null {
   if (phase === 'upcoming') {
     return currentEdition.tickets
-      ? { label: 'Réserver ma place', shortLabel: 'Billetterie', href: currentEdition.tickets, external: true }
+      ? {
+          label: 'Réserver ma place',
+          shortLabel: 'Billetterie',
+          href: currentEdition.tickets,
+          external: true,
+        }
       : null;
   }
   if (phase === 'today') {
-    return { label: 'Programme du jour', shortLabel: 'Programme', href: '/programme', external: false };
+    return {
+      label: 'Programme du jour',
+      shortLabel: 'Programme',
+      href: '/programme',
+      external: false,
+    };
   }
-  return { label: 'Voir les rediffusions', shortLabel: 'Rediffusions', href: links.youtube, external: true };
+  return {
+    label: 'Voir les rediffusions',
+    shortLabel: 'Rediffusions',
+    href: links.youtube,
+    external: true,
+  };
 }

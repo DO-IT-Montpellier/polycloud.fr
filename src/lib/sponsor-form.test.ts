@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildPayload, submitOnce, errorMessage } from './sponsor-form.ts';
+import { buildPayload, submitOnce, errorMessage, checkBeforeSend } from './sponsor-form.ts';
 
 const choices = {
   lt50: { id: 'lt50', label: 'Moins de 50 salarié·e·s' },
@@ -87,4 +87,13 @@ test('errorMessage explains what to do', () => {
     fallback,
   );
   assert.equal(errorMessage(0, null, 'sponsors@polycloud.fr'), fallback);
+});
+
+test('checkBeforeSend waits for the anti-bot check', () => {
+  const payload = buildPayload(filledForm(), choices);
+  assert.equal(checkBeforeSend(payload), null);
+  assert.equal(
+    checkBeforeSend({ ...payload, turnstileToken: '' }),
+    'Merci de patienter pendant la vérification anti-robot, puis réessayez.',
+  );
 });

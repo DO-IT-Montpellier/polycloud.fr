@@ -68,3 +68,12 @@ export function errorMessage(status: number, body: unknown, email: string): stri
   }
   return `L'envoi a échoué. Réessayez, ou écrivez-nous à ${email}.`;
 }
+
+/** A message to show instead of sending, or null when the payload can be sent. */
+export function checkBeforeSend(payload: SponsorPayload): string | null {
+  // Turnstile fills its token a moment after the page loads, and again after each reset
+  if (!payload.turnstileToken) {
+    return 'Merci de patienter pendant la vérification anti-robot, puis réessayez.';
+  }
+  return null;
+}

@@ -131,7 +131,7 @@ const link =
         <p class="mt-6 leading-relaxed text-plum-950/80">
           Le formulaire «&nbsp;Devenir partenaire&nbsp;» et sa base de données sont hébergés par{" "}
           <a href={formHost.href} target="_blank" rel="noopener noreferrer" class={link}>{formHost.name}</a>, un
-          service de {formHost.company}. Les données du formulaire sont stockées dans l'Union européenne.
+          service de {formHost.company}. La base de données du formulaire est stockée dans l'Union européenne.
         </p>
         <address class="mt-3 text-plum-950/70 not-italic">
           {formHost.address.map((line) => <span class="block">{line}</span>)}
@@ -188,7 +188,7 @@ const link =
             <dt class="font-semibold text-plum-800">Données</dt>
             <dd>
               Les champs du formulaire&nbsp;: entreprise, site web, nom, fonction, e-mail, téléphone, taille de la
-              structure, palier et options souhaités, message. Les champs marqués d'un astérisque sont obligatoires
+              structure, palier et options souhaités, engagement sur deux ans, participation en 2026, message. Les champs marqués d'un astérisque sont obligatoires
               pour traiter la demande. Ni votre adresse IP ni votre navigateur ne sont enregistrés avec la demande.
             </dd>
 
@@ -201,13 +201,17 @@ const link =
 
             <dt class="font-semibold text-plum-800">Localisation</dt>
             <dd>
-              Les données sont stockées dans l'Union européenne. Cloudflare et Mailgun appartiennent à des groupes
+              La base de données des demandes est stockée dans l'Union européenne. Une copie de chaque demande est
+              envoyée par e-mail à l'équipe ({sponsorForm.email}). Cloudflare et Mailgun appartiennent à des groupes
               établis hors de l'UE&nbsp;: Cloudflare adhère au Data Privacy Framework UE–États-Unis, et Mailgun est
               encadré par les clauses contractuelles types de la Commission européenne.
             </dd>
 
             <dt class="font-semibold text-plum-800">Durée</dt>
-            <dd>3 ans après votre demande, puis suppression automatique.</dd>
+            <dd>
+              3 ans après votre demande. La base de données est purgée automatiquement&nbsp;; les e-mails de
+              notification sont supprimés de notre messagerie dans le même délai.
+            </dd>
 
             <dt class="font-semibold text-plum-800">Vos droits</dt>
             <dd>

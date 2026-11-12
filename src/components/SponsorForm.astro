@@ -3,11 +3,10 @@ import { tiers, addOns, companySizes, undecidedTier, tierChoice, addOnChoice, ty
 import { sponsorForm } from "../data/site";
 
 // Every radio/checkbox value is a choice id; the client script sends the matching label to the API.
-const sizeChoices = companySizes;
 const tierChoices = [...tiers.map((t) => ({ ...tierChoice(t), pitch: t.pitch, recommended: t.recommended })), { ...undecidedTier, pitch: undefined, recommended: false }];
 const optionChoices = addOns.map((a) => ({ ...addOnChoice(a), description: a.description }));
 const choices: Record<string, Choice> = Object.fromEntries(
-  [...sizeChoices, ...tierChoices, ...optionChoices].map(({ id, label }) => [id, { id, label }]),
+  [...companySizes, ...tierChoices, ...optionChoices].map(({ id, label }) => [id, { id, label }]),
 );
 
 const input =
@@ -20,7 +19,7 @@ const legend = "text-lg font-bold text-plum-700";
 
 const textFields = [
   { name: "company", label: "Entreprise", required: true, autocomplete: "organization", placeholder: "Nom de la structure" },
-  { name: "website", label: "Site web", type: "url", autocomplete: "url", placeholder: "https://" },
+  { name: "website", label: "Site web", inputmode: "url", autocomplete: "url", placeholder: "acme.fr" },
   { name: "contactName", label: "Nom et prénom", required: true, autocomplete: "name" },
   { name: "role", label: "Fonction", autocomplete: "organization-title", placeholder: "RH, DevRel, CTO…" },
   { name: "email", label: "E-mail professionnel", type: "email", required: true, autocomplete: "email" },
@@ -53,6 +52,7 @@ const textFields = [
                 id={f.name}
                 name={f.name}
                 type={f.type ?? "text"}
+                inputmode={f.inputmode}
                 required={f.required}
                 autocomplete={f.autocomplete}
                 placeholder={f.placeholder}
@@ -73,7 +73,7 @@ const textFields = [
         <legend class={label}>Taille de la structure<span class="text-plum-600"> *</span></legend>
         <div class="mt-2 grid gap-2 sm:grid-cols-3">
           {
-            sizeChoices.map((c) => (
+            companySizes.map((c) => (
               <label class={card}>
                 <input type="radio" name="size" value={c.id} required class={control} />
                 <span class="text-sm">{c.label}</span>
@@ -183,7 +183,7 @@ const textFields = [
 <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <script>
-  import { buildPayload, submitOnce, errorMessage } from "../lib/sponsor-form";
+  import { buildPayload, submitOnce, errorMessage, checkBeforeSend } from "../lib/sponsor-form";
   import type { Choice } from "../data/sponsoring";
 
   const form = document.querySelector<HTMLFormElement>("#sponsor-form")!;
@@ -222,13 +222,19 @@ const textFields = [
 
   const submit = submitOnce(async () => {
     clearErrors();
+    const payload = buildPayload(new FormData(form), choices);
+    const notReady = checkBeforeSend(payload);
+    if (notReady) {
+      showFormError(notReady);
+      return;
+    }
     button.disabled = true;
     button.textContent = "Envoi…";
     try {
       const response = await fetch(form.dataset.apiUrl!, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(buildPayload(new FormData(form), choices)),
+        body: JSON.stringify(payload),
       }).catch(() => null);
       const body = await response?.json().catch(() => null);
 
@@ -239,12 +245,13 @@ const textFields = [
         return;
       }
       if (response?.status === 400 && body?.errors) {
+        // Fields are checked before the token, so the token is still valid
         showFieldErrors(body.errors);
       } else {
         showFormError(errorMessage(response?.status ?? 0, body, form.dataset.email!));
+        // A Turnstile token can only be used once: get a fresh one for the next try
+        (window as { turnstile?: { reset(): void } }).turnstile?.reset();
       }
-      // A Turnstile token can only be used once: get a fresh one for the next try
-      (window as { turnstile?: { reset(): void } }).turnstile?.reset();
     } finally {
       button.disabled = false;
       button.textContent = "Envoyer ma demande";

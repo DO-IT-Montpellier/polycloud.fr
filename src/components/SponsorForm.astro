@@ -1,9 +1,19 @@
 ---
-import { tiers, addOns, companySizes, undecidedTier, tierChoice, addOnChoice, type Choice } from "../data/sponsoring";
+import { tiers, addOns, companySizes, undecidedTier, tierChoice, addOnChoice, formatEur, type Choice } from "../data/sponsoring";
 import { sponsorForm } from "../data/site";
 
 // Every radio/checkbox value is a choice id; the client script sends the matching label to the API.
-const tierChoices = [...tiers.map((t) => ({ ...tierChoice(t), pitch: t.pitch, recommended: t.recommended })), { ...undecidedTier, pitch: undefined, recommended: false }];
+// Tier cards show name, price and pitch on separate lines; the API still gets the one-line label.
+const tierChoices = [
+  ...tiers.map((t) => ({
+    ...tierChoice(t),
+    name: t.name,
+    price: `${formatEur(t.priceEur)} HT · ${t.slots}`,
+    pitch: t.pitch,
+    recommended: t.recommended,
+  })),
+  { ...undecidedTier, name: undecidedTier.label, price: undefined, pitch: undefined, recommended: false },
+];
 const optionChoices = addOns.map((a) => ({ ...addOnChoice(a), description: a.description }));
 const choices: Record<string, Choice> = Object.fromEntries(
   [...companySizes, ...tierChoices, ...optionChoices].map(({ id, label }) => [id, { id, label }]),
@@ -92,10 +102,13 @@ const textFields = [
               <label class={card}>
                 <input type="radio" name="tier" value={c.id} required class={control} />
                 <span class="text-sm">
-                  <span class="font-semibold">{c.label}</span>
-                  {c.recommended && (
-                    <span class="ml-1 rounded-full bg-plum-100 px-2 py-0.5 text-xs font-bold text-plum-700">Recommandé</span>
-                  )}
+                  <span class="flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <span class="font-semibold">{c.name}</span>
+                    {c.recommended && (
+                      <span class="rounded-full bg-plum-100 px-2 py-0.5 text-xs font-bold text-plum-700">Recommandé</span>
+                    )}
+                  </span>
+                  {c.price && <span class="mt-0.5 block font-semibold whitespace-nowrap text-plum-600">{c.price}</span>}
                   {c.pitch && <span class="mt-0.5 block text-plum-950/60">{c.pitch}</span>}
                 </span>
               </label>

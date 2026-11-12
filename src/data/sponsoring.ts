@@ -1,5 +1,5 @@
 /**
- * The sponsoring offer shown on /partenaires. This is the only place prices live:
+ * The sponsoring offer shown on /sponsors. This is the only place prices live:
  * the form sends each choice with the label built here, and the API stores it as is.
  */
 

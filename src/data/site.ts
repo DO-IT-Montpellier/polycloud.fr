@@ -82,7 +82,7 @@ export const venue = {
   ],
 } as const;
 
-/** The partner request form on /partenaires and the API it posts to (DO-IT-Montpellier/cloudflare). */
+/** The partner request form on /sponsors and the API it posts to (DO-IT-Montpellier/cloudflare). */
 export const sponsorForm = {
   apiUrl: 'https://api.polycloud.fr/sponsor-requests',
   // Public key from `tofu output -raw sponsor_form_turnstile_sitekey`.

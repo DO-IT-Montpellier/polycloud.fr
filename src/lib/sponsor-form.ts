@@ -1,5 +1,5 @@
 /**
- * Browser-side logic of the partner form (/partenaires), kept free of DOM code so it can be tested.
+ * Browser-side logic of the partner form (/sponsors), kept free of DOM code so it can be tested.
  * The payload matches the API contract of the `polycloud-sponsor-form` Worker (DO-IT-Montpellier/cloudflare).
  */
 import type { Choice } from '../data/sponsoring';

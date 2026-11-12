@@ -1,0 +1,259 @@
+---
+import { tiers, addOns, companySizes, undecidedTier, tierChoice, addOnChoice, type Choice } from "../data/sponsoring";
+import { sponsorForm } from "../data/site";
+
+// Every radio/checkbox value is a choice id; the client script sends the matching label to the API.
+const sizeChoices = companySizes;
+const tierChoices = [...tiers.map((t) => ({ ...tierChoice(t), pitch: t.pitch, recommended: t.recommended })), { ...undecidedTier, pitch: undefined, recommended: false }];
+const optionChoices = addOns.map((a) => ({ ...addOnChoice(a), description: a.description }));
+const choices: Record<string, Choice> = Object.fromEntries(
+  [...sizeChoices, ...tierChoices, ...optionChoices].map(({ id, label }) => [id, { id, label }]),
+);
+
+const input =
+  "mt-2 block w-full rounded-2xl border-0 bg-white px-4 py-3 text-plum-950 ring-1 ring-plum-900/10 placeholder:text-plum-950/40 focus:ring-2 focus:ring-plum-600 focus:outline-none aria-invalid:ring-2 aria-invalid:ring-red-600";
+const label = "block text-sm font-semibold text-plum-800";
+const card =
+  "flex cursor-pointer items-start gap-3 rounded-2xl bg-white px-4 py-3 ring-1 ring-plum-900/10 transition hover:ring-plum-300 has-checked:ring-2 has-checked:ring-plum-600";
+const control = "mt-1 size-4 shrink-0 accent-plum-600";
+const legend = "text-lg font-bold text-plum-700";
+
+const textFields = [
+  { name: "company", label: "Entreprise", required: true, autocomplete: "organization", placeholder: "Nom de la structure" },
+  { name: "website", label: "Site web", type: "url", autocomplete: "url", placeholder: "https://" },
+  { name: "contactName", label: "Nom et prénom", required: true, autocomplete: "name" },
+  { name: "role", label: "Fonction", autocomplete: "organization-title", placeholder: "RH, DevRel, CTO…" },
+  { name: "email", label: "E-mail professionnel", type: "email", required: true, autocomplete: "email" },
+  { name: "phone", label: "Téléphone", type: "tel", autocomplete: "tel" },
+];
+---
+
+<div id="sponsor-form-root">
+  <form
+    id="sponsor-form"
+    class="flex flex-col gap-10"
+    novalidate
+    data-api-url={sponsorForm.apiUrl}
+    data-email={sponsorForm.email}
+    data-choices={JSON.stringify(choices)}
+  >
+    <p class="text-sm text-plum-950/60"><span aria-hidden="true">*</span> champ obligatoire</p>
+
+    <fieldset class="flex flex-col gap-5">
+      <legend class={legend}>Vos coordonnées</legend>
+      <div class="grid gap-5 sm:grid-cols-2">
+        {
+          textFields.map((f) => (
+            <div>
+              <label for={f.name} class={label}>
+                {f.label}
+                {f.required && <span class="text-plum-600"> *</span>}
+              </label>
+              <input
+                id={f.name}
+                name={f.name}
+                type={f.type ?? "text"}
+                required={f.required}
+                autocomplete={f.autocomplete}
+                placeholder={f.placeholder}
+                aria-describedby={`${f.name}-error`}
+                class={input}
+              />
+              <p id={`${f.name}-error`} class="mt-1.5 text-sm text-red-700" hidden />
+            </div>
+          ))
+        }
+      </div>
+    </fieldset>
+
+    <fieldset class="flex flex-col gap-5">
+      <legend class={legend}>Votre partenariat</legend>
+
+      <fieldset aria-describedby="size-error">
+        <legend class={label}>Taille de la structure<span class="text-plum-600"> *</span></legend>
+        <div class="mt-2 grid gap-2 sm:grid-cols-3">
+          {
+            sizeChoices.map((c) => (
+              <label class={card}>
+                <input type="radio" name="size" value={c.id} required class={control} />
+                <span class="text-sm">{c.label}</span>
+              </label>
+            ))
+          }
+        </div>
+        <p id="size-error" class="mt-1.5 text-sm text-red-700" hidden></p>
+      </fieldset>
+
+      <fieldset aria-describedby="tier-error">
+        <legend class={label}>Palier souhaité<span class="text-plum-600"> *</span></legend>
+        <div class="mt-2 grid gap-2 sm:grid-cols-2">
+          {
+            tierChoices.map((c) => (
+              <label class={card}>
+                <input type="radio" name="tier" value={c.id} required class={control} />
+                <span class="text-sm">
+                  <span class="font-semibold">{c.label}</span>
+                  {c.recommended && (
+                    <span class="ml-1 rounded-full bg-plum-100 px-2 py-0.5 text-xs font-bold text-plum-700">Recommandé</span>
+                  )}
+                  {c.pitch && <span class="mt-0.5 block text-plum-950/60">{c.pitch}</span>}
+                </span>
+              </label>
+            ))
+          }
+        </div>
+        <p id="tier-error" class="mt-1.5 text-sm text-red-700" hidden></p>
+      </fieldset>
+
+      <fieldset aria-describedby="options-error">
+        <legend class={label}>Options à la carte</legend>
+        <p class="mt-1 text-sm text-plum-950/60">Cumulables avec n'importe quel palier.</p>
+        <div class="mt-2 grid gap-2 sm:grid-cols-2">
+          {
+            optionChoices.map((c) => (
+              <label class={card}>
+                <input type="checkbox" name="options" value={c.id} class={control} />
+                <span class="text-sm">
+                  <span class="font-semibold">{c.label}</span>
+                  <span class="mt-0.5 block text-plum-950/60">{c.description}</span>
+                </span>
+              </label>
+            ))
+          }
+        </div>
+        <p id="options-error" class="mt-1.5 text-sm text-red-700" hidden></p>
+      </fieldset>
+
+      <div class="flex flex-col gap-2">
+        <label class="flex items-start gap-3 text-sm">
+          <input type="checkbox" name="twoYears" class={control} />
+          <span><span class="font-semibold">Engagement 2 ans</span> : je souhaite m'engager pour 2027 et 2028 (–10&nbsp;%).</span>
+        </label>
+        <label class="flex items-start gap-3 text-sm">
+          <input type="checkbox" name="partner2026" class={control} />
+          <span><span class="font-semibold">Partenaire en 2026</span> : priorité sur votre palier jusqu'au 31 janvier 2027.</span>
+        </label>
+      </div>
+
+      <div>
+        <label for="message" class={label}>Message</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          maxlength="5000"
+          placeholder="Questions, contraintes, idées d'atelier…"
+          aria-describedby="message-error"
+          class={input}></textarea>
+        <p id="message-error" class="mt-1.5 text-sm text-red-700" hidden></p>
+      </div>
+    </fieldset>
+
+    <div class="flex flex-col items-start gap-4">
+      <div class="cf-turnstile" data-sitekey={sponsorForm.turnstileSiteKey} data-language="fr" data-theme="light"></div>
+      <p id="form-error" role="alert" class="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-800" hidden></p>
+      <button
+        type="submit"
+        class="inline-flex items-center justify-center gap-2 rounded-full bg-plum-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-plum-600/25 transition duration-200 hover:bg-plum-700 disabled:cursor-wait disabled:opacity-60"
+      >
+        Envoyer ma demande
+      </button>
+      <p class="max-w-2xl text-xs leading-relaxed text-plum-950/60">
+        Les informations saisies sont utilisées par DO IT Montpellier pour traiter votre demande de partenariat et sont
+        conservées 3 ans. Pour exercer vos droits : {sponsorForm.email}. En savoir plus :
+        <a href="/mentions-legales#formulaire-partenaires" class="underline decoration-plum-200 underline-offset-2 hover:decoration-plum-600"
+          >mentions légales</a
+        >.
+      </p>
+    </div>
+  </form>
+
+  <div id="sponsor-form-thanks" class="rounded-3xl bg-white p-8 ring-1 ring-plum-900/5" tabindex="-1" hidden>
+    <h2 class="text-xl font-bold text-plum-700">Merci !</h2>
+    <p class="mt-2 text-plum-950/80">L'équipe Polycloud vous recontacte sous une semaine.</p>
+  </div>
+
+  <noscript>
+    <p class="mt-6 rounded-2xl bg-plum-100 px-4 py-3 text-sm text-plum-800">
+      Ce formulaire nécessite JavaScript. Écrivez-nous à <a href={`mailto:${sponsorForm.email}`} class="font-semibold underline">{sponsorForm.email}</a>.
+    </p>
+  </noscript>
+</div>
+
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script>
+  import { buildPayload, submitOnce, errorMessage } from "../lib/sponsor-form";
+  import type { Choice } from "../data/sponsoring";
+
+  const form = document.querySelector<HTMLFormElement>("#sponsor-form")!;
+  const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+  const formError = form.querySelector<HTMLElement>("#form-error")!;
+  const thanks = document.querySelector<HTMLElement>("#sponsor-form-thanks")!;
+  const choices: Record<string, Choice> = JSON.parse(form.dataset.choices!);
+
+  function clearErrors() {
+    formError.hidden = true;
+    form.querySelectorAll<HTMLElement>('[id$="-error"]').forEach((el) => (el.hidden = true));
+    form.querySelectorAll("[aria-invalid]").forEach((el) => el.removeAttribute("aria-invalid"));
+  }
+
+  function showFieldErrors(errors: Record<string, string>) {
+    let first: HTMLElement | null = null;
+    for (const [field, message] of Object.entries(errors)) {
+      const slot = form.querySelector<HTMLElement>(`#${field}-error`);
+      if (!slot) {
+        showFormError(message);
+        continue;
+      }
+      slot.textContent = message;
+      slot.hidden = false;
+      const input = form.querySelector<HTMLElement>(`[name="${field}"]`);
+      input?.setAttribute("aria-invalid", "true");
+      first ??= input;
+    }
+    first?.focus();
+  }
+
+  function showFormError(message: string) {
+    formError.textContent = message;
+    formError.hidden = false;
+  }
+
+  const submit = submitOnce(async () => {
+    clearErrors();
+    button.disabled = true;
+    button.textContent = "Envoi…";
+    try {
+      const response = await fetch(form.dataset.apiUrl!, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(buildPayload(new FormData(form), choices)),
+      }).catch(() => null);
+      const body = await response?.json().catch(() => null);
+
+      if (response?.status === 201) {
+        form.hidden = true;
+        thanks.hidden = false;
+        thanks.focus();
+        return;
+      }
+      if (response?.status === 400 && body?.errors) {
+        showFieldErrors(body.errors);
+      } else {
+        showFormError(errorMessage(response?.status ?? 0, body, form.dataset.email!));
+      }
+      // A Turnstile token can only be used once: get a fresh one for the next try
+      (window as { turnstile?: { reset(): void } }).turnstile?.reset();
+    } finally {
+      button.disabled = false;
+      button.textContent = "Envoyer ma demande";
+    }
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    void submit();
+  });
+</script>

@@ -44,6 +44,7 @@ const facts = [
   ...(hours
     ? [{ value: `${formatTime(hours.start)}–${formatTime(hours.end)}`, label: "de talks et d'échanges" }]
     : []),
+  ...(edition.talkHours ? [{ value: `${edition.talkHours}h`, label: "de talks" }] : []),
   { value: "Cloud", label: "et DevOps au programme" },
 ];
 ---

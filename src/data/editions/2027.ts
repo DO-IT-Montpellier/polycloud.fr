@@ -7,6 +7,7 @@ const edition: Edition = {
   rooms: ['Amphi Peytavin', 'Salle SC001', 'Salle SC002'],
   roomsNamed: true,
   notes: ['Les conférences sont intégralement en français.'],
+  talkHours: 8,
   cfp: {
     opens: '2026-11-16',
     url: 'https://conference-hall.io/polycloud-2027',

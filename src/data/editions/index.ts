@@ -4,11 +4,12 @@ import e2023 from './2023';
 import e2024 from './2024';
 import e2025 from './2025';
 import e2026 from './2026';
+import e2027 from './2027';
 
 export * from './types';
 
 /** Newest first. The first one is the edition the site is about: add the next one on top to switch to it. */
-export const editions: Edition[] = [e2026, e2025, e2024, e2023, e2022];
+export const editions: Edition[] = [e2027, e2026, e2025, e2024, e2023, e2022];
 export const currentEdition = editions[0];
 
 /**

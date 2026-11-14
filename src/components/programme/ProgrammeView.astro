@@ -34,6 +34,12 @@ const rows = rowsOf(edition);
 const talks = talksOf(edition);
 const totalTalks = talks.filter((t) => t.speakers.length > 0).length;
 
+// Rooms that host talks side by side, in order: each gets its own column, so a room keeps the same
+// column all day (e.g. rooms 0 and 1 in 2026; rooms 1 and 2 in 2027, the main room being on its own).
+const parallelRooms = [
+  ...new Set(rows.filter((r) => r.parallel.length > 1).flatMap((r) => r.parallel.map((t) => t.room!))),
+].sort((a, b) => a - b);
+
 const talkId = (t: Talk) => `${t.start}-${t.room ?? "all"}`.replace(":", "");
 const dt = (time: string) => `${edition.date}T${time}`;
 const minutes = (s: string, e: string) => {
@@ -84,7 +90,10 @@ const minutes = (s: string, e: string) => {
                 const list: Talk[] = row.plenary?.kind === "talk" ? [row.plenary] : row.parallel;
                 if (list.length === 0) return null;
                 return (
-                  <div class:list={["parallel grid gap-3", list.length > 1 && "md:grid-cols-2"]}>
+                  <div
+                    class:list={["parallel grid gap-3", list.length > 1 && "split"]}
+                    style={list.length > 1 ? `--cols: ${parallelRooms.length}` : undefined}
+                  >
                     {list.map((t) => {
                       const ownTime = t.end !== end;
                       // Keynotes and plenary sessions get the full-width purple card
@@ -98,6 +107,7 @@ const minutes = (s: string, e: string) => {
                           data-room={t.room ?? "all"}
                           data-topic={t.topic ?? ""}
                           data-advanced={t.advanced ? "" : undefined}
+                          style={list.length > 1 ? `--col: ${parallelRooms.indexOf(t.room!) + 1}` : undefined}
                           class:list={[
                             "talk group/talk relative flex flex-col rounded-3xl p-5 transition sm:p-6",
                             featured
@@ -255,8 +265,11 @@ const minutes = (s: string, e: string) => {
 <style>
   /* Keep each parallel talk in its room's column. */
   @media (min-width: 48rem) {
-    .parallel > [data-room="1"] {
-      grid-column-start: 2;
+    .parallel.split {
+      grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    }
+    .parallel.split > [data-talk] {
+      grid-column-start: var(--col);
     }
   }
 

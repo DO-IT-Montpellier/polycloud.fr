@@ -2,7 +2,8 @@ export const links = {
   youtube: 'https://www.youtube.com/@Polycloud_mtp',
   maps: 'https://maps.app.goo.gl/ycGQfaiXGvp1fsr86',
   pressKit: '/files/polycloud_press_kit.zip',
-  devopsCourse: 'https://www.polytech.umontpellier.fr/formation/cycle-ingenieur/devops',
+  devopsCourse:
+    'https://www.polytech.umontpellier.fr/formation/cycle-ingenieur/informatique/do-developpement-informatique-et-exploitation-operationnelle',
 };
 
 /** `secondary` links are set apart, to the left of the main ones, in the desktop header. */

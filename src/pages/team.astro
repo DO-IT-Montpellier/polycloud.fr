@@ -8,32 +8,27 @@ import { links } from "../data/site";
 
 const team = currentEdition.team ?? [];
 
-const skills = [
-  "Gestion de projet",
-  "Leadership",
-  "Communication",
-  "Travail en équipe",
+const missions = [
+  "Organiser et financer des événements autour de l'informatique, Polycloud en tête",
+  "Donner un coup de pouce aux étudiant·e·s qui se déplacent pour apprendre ou rencontrer des pros",
+  "Faire se rencontrer étudiant·e·s et professionnel·le·s",
+  "Soutenir toutes les initiatives étudiantes qui vont dans ce sens",
 ];
 ---
 
 <Layout
   title="L'équipe"
-  description="L'équipe d'étudiant·e·s de la filière DevOps de Polytech Montpellier qui organise Polycloud."
+  description="Polycloud est organisée par DO IT Montpellier, une association d'étudiant·e·s en informatique de Polytech Montpellier."
 >
   <PageHero
     eyebrow="À propos de nous"
-    title="Des étudiant·e·s passionné·e·s par la culture DevOps"
+    title="Une asso étudiante derrière Polycloud"
   >
     <p>
-      Nous sommes des étudiant·e·s apprenti·e·s à l'école d'ingénieur Polytech
-      Montpellier, en cursus d'apprentissage dans la{" "}
-      <a
-        href={links.devopsCourse}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="font-semibold text-plum-600 underline decoration-lilac-400 decoration-2 underline-offset-4 hover:decoration-plum-600"
-        >filière DevOps</a
-      >.
+      Polycloud est organisée par{" "}
+      <strong class="font-semibold text-plum-700">DO IT Montpellier</strong>,
+      une association créée par des étudiant·e·s en informatique de Polytech
+      Montpellier pour faire vivre la conférence… et bien d'autres projets.
     </p>
   </PageHero>
 
@@ -43,44 +38,43 @@ const skills = [
     <div
       class="rounded-3xl bg-white p-8 leading-relaxed text-plum-950/75 ring-1 ring-plum-900/5 sm:p-10"
     >
-      <p>
-        <strong class="text-plum-700">DO</strong>, c'est l'acronyme de{" "}
-        <strong class="text-plum-700"
-          >Développement informatique et exploitation Opérationnelle</strong
-        >, en bref, le cœur du DevOps&nbsp;! Cette formation en apprentissage
-        forme les ingénieur·e·s de demain à la maîtrise de{" "}
-        <strong class="text-plum-700">toute la chaîne de production</strong> d'une
-        application&nbsp;: du développement et des tests d'intégration jusqu'au déploiement,
-        à la maintenance et à la surveillance des applications en environnement cloud
-        ☁️.
+      <h2 class="text-xs font-bold uppercase tracking-logo text-lilac-500">
+        D'où on vient
+      </h2>
+      <p class="mt-5">
+        De 2022 à 2026, Polycloud a été portée par les apprenti·e·s de la{" "}
+        <a
+          href={links.devopsCourse}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-semibold text-plum-600 underline decoration-lilac-400 decoration-2 underline-offset-4 hover:decoration-plum-600"
+          >filière DO</a
+        >{" "}
+        de Polytech Montpellier, dans le cadre de leur formation. Cinq éditions
+        plus tard, on a voulu donner à l'aventure un cadre à elle.
       </p>
       <p class="mt-5">
-        Notre parcours est ponctué de nombreux défis, et l'un des plus
-        enrichissants est sans doute celui-ci&nbsp;:{" "}
-        <strong class="text-plum-700"
-          >organiser une conférence professionnelle</strong
-        >.
+        C'est comme ça qu'est née{" "}
+        <strong class="text-plum-700">DO IT Montpellier</strong>&nbsp;: une
+        association qui soutient les projets des
+        étudiant·e·s des formations d'ingénieur en informatique de Polytech
+        Montpellier. Polycloud reste notre grand rendez-vous de l'année, mais
+        ce n'est pas le seul&nbsp;!
       </p>
     </div>
-    <div
-      class="flex flex-col justify-between rounded-3xl bg-plum-600 p-8 text-white sm:p-10"
-    >
-      <p class="leading-relaxed text-white/85">
-        Polycloud, c'est l'aboutissement de ce challenge unique, qui nous permet
-        d'acquérir des compétences et des valeurs qu'on ne trouve pas dans un
-        cours&nbsp;:
-      </p>
-      <ul class="mt-6 flex flex-wrap gap-2">
+    <div class="rounded-3xl bg-plum-600 p-8 text-white sm:p-10">
+      <h2 class="text-xs font-bold uppercase tracking-logo text-lilac-300">
+        Ce que fait l'asso
+      </h2>
+      <ul class="mt-6 space-y-4">
         {
-          skills.map((s) => (
-            <li class="rounded-full bg-white/15 px-4 py-2 text-sm font-semibold">
-              {s}
+          missions.map((m) => (
+            <li class="flex gap-3 leading-relaxed text-white/85">
+              <span class="mt-2.5 size-2 shrink-0 rounded-full bg-lilac-400" />
+              {m}
             </li>
           ))
         }
-        <li class="rounded-full bg-lilac-400 px-4 py-2 text-sm font-semibold">
-          et bien plus encore…
-        </li>
       </ul>
     </div>
   </section>

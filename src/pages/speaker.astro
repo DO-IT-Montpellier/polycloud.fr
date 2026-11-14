@@ -13,20 +13,20 @@ const formats = [
     text: "Un format court et efficace pour présenter un sujet, un retour d'expérience ou une découverte.",
   },
   {
-    duration: "50",
+    duration: "45",
     label: "minutes",
     text: "Un talk plus approfondi, pour entrer dans le détail et aller plus loin.",
   },
 ];
 
-const levels = [
+const keynotes = [
   {
-    name: "Beginner",
-    text: "Pour faire découvrir un sujet à un public curieux, sans prérequis.",
+    name: "Ouverture",
+    text: "Pour lancer la journée avec un sujet inspirant, qui donne envie d'explorer et de sortir des sentiers battus.",
   },
   {
-    name: "Advanced",
-    text: "Pour celles et ceux qui veulent creuser, avec un public déjà initié.",
+    name: "Clôture",
+    text: "Pour conclure sur une note créative\u00a0: une vision, une expérience ou un regard décalé sur la tech.",
   },
 ];
 
@@ -92,17 +92,17 @@ const linkedin = socials.find((s) => s.network === "linkedin")!;
     </div>
     <div class="rounded-3xl bg-white p-8 ring-1 ring-plum-900/5">
       <h2 class="text-xs font-bold uppercase tracking-logo text-lilac-500">
-        Deux niveaux de public
+        Deux keynotes
       </h2>
       <ul class="mt-6 grid gap-4 sm:grid-cols-2">
         {
-          levels.map((l) => (
+          keynotes.map((k) => (
             <li class="rounded-2xl bg-plum-50 p-5">
               <p class="inline-flex rounded-full bg-plum-600 px-3 py-1 text-sm font-bold text-white">
-                {l.name}
+                {k.name}
               </p>
               <p class="mt-3 text-sm leading-relaxed text-plum-950/70">
-                {l.text}
+                {k.text}
               </p>
             </li>
           ))

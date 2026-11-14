@@ -51,7 +51,13 @@ export type SponsorTier = {
   sponsors: Sponsor[];
 };
 
-export type TeamMember = { name: string; role: string; linkedin?: string };
+export type TeamMember = {
+  name: string;
+  role: string;
+  linkedin?: string;
+  /** Asset name in public/images/team/, without the .webp extension */
+  icon?: string;
+};
 
 export type Edition = {
   year: number;
@@ -62,6 +68,8 @@ export type Edition = {
   /** false when the original programme did not name the rooms */
   roomsNamed: boolean;
   notes?: string[];
+  /** Total time dedicated to talks, in hours, shown on the homepage. */
+  talkHours?: number;
   /** Ticketing page. Shown while the edition is upcoming. */
   tickets?: string;
   /** Call for papers. Dates are ISO (YYYY-MM-DD); `url` is the submission form. */

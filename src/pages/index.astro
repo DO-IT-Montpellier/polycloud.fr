@@ -44,6 +44,7 @@ const facts = [
   ...(hours
     ? [{ value: `${formatTime(hours.start)}–${formatTime(hours.end)}`, label: "de talks et d'échanges" }]
     : []),
+  ...(edition.talkHours ? [{ value: `${edition.talkHours}h`, label: "de talks" }] : []),
   { value: "Cloud", label: "et DevOps au programme" },
 ];
 ---
@@ -56,7 +57,7 @@ const facts = [
     >
     </div>
     <div
-      class="mx-auto grid max-w-7xl items-center gap-12 px-4 pt-12 pb-10 sm:px-6 sm:pt-20 lg:grid-cols-[1.1fr_1fr] lg:px-8"
+      class="relative mx-auto grid max-w-7xl items-center gap-12 px-4 pt-12 pb-10 sm:px-6 sm:pt-20 lg:grid-cols-[1.1fr_1fr] lg:px-8"
     >
       <div>
         <p
@@ -342,7 +343,7 @@ const facts = [
             tone="light"
           >
             <p class="mt-5 text-lg leading-relaxed text-white/75">
-              Grâce à l'intervention d'experts habitués des grandes conférences
+              Grâce à l'intervention d'expert·e·s habitué·e·s des grandes conférences
               comme Devoxx ou KubeCon, une multitude de sujets sont abordés tout
               au long de la journée.
             </p>

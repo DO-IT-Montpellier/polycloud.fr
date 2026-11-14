@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import PageHero from "../components/PageHero.astro";
+import { sponsorForm } from "../data/site";
 
 const publisher = {
   name: "DO IT Montpellier",
@@ -25,8 +26,20 @@ const host = {
   href: "https://pages.github.com/",
 };
 
+// Runs the partner form's API and database (see DO-IT-Montpellier/cloudflare)
+const formHost = {
+  name: "Cloudflare",
+  company: "Cloudflare, Inc.",
+  address: ["101 Townsend Street", "San Francisco, CA 94107", "États-Unis"],
+  phone: "+1 650 319 8930",
+  href: "https://www.cloudflare.com/",
+};
+
 // "+33 1 23 45 67 89" -> "tel:+33123456789"
 const tel = (phone: string) => `tel:${phone.replace(/[^+\d]/g, "")}`;
+
+const link =
+  "font-semibold text-plum-600 underline decoration-lilac-400 decoration-2 underline-offset-4 hover:decoration-plum-600";
 ---
 
 <Layout
@@ -115,6 +128,20 @@ const tel = (phone: string) => `tel:${phone.replace(/[^+\d]/g, "")}`;
             >
           </span>
         </address>
+        <p class="mt-6 leading-relaxed text-plum-950/80">
+          Le formulaire «&nbsp;Devenir partenaire&nbsp;» et sa base de données sont hébergés par{" "}
+          <a href={formHost.href} target="_blank" rel="noopener noreferrer" class={link}>{formHost.name}</a>, un
+          service de {formHost.company}. La base de données du formulaire est stockée dans l'Union européenne.
+        </p>
+        <address class="mt-3 text-plum-950/70 not-italic">
+          {formHost.address.map((line) => <span class="block">{line}</span>)}
+          <span class="mt-2 block">
+            Téléphone&nbsp;:{" "}
+            <a href={tel(formHost.phone)} class="underline decoration-plum-200 underline-offset-4 hover:decoration-plum-600"
+              >{formHost.phone}</a
+            >
+          </span>
+        </address>
       </section>
 
       <section
@@ -126,8 +153,7 @@ const tel = (phone: string) => `tel:${phone.replace(/[^+\d]/g, "")}`;
         </h2>
         <div class="mt-5 space-y-4 leading-relaxed text-plum-950/80">
           <p>
-            Ce site ne dépose aucun cookie et n'utilise aucun outil de mesure
-            d'audience. Notre hébergeur, GitHub, conserve l'adresse IP des
+            Ce site n'utilise aucun outil de mesure d'audience. Notre hébergeur, GitHub, conserve l'adresse IP des
             visiteurs dans ses journaux techniques pour assurer la sécurité du
             service (voir sa{" "}
             <a
@@ -142,6 +168,57 @@ const tel = (phone: string) => `tel:${phone.replace(/[^+\d]/g, "")}`;
             Les noms des intervenants sont publiés avec leur accord dans le
             cadre du programme.
           </p>
+
+          <h3 id="formulaire-partenaires" class="pt-2 text-lg font-bold text-plum-700">
+            Formulaire «&nbsp;Devenir partenaire&nbsp;»
+          </h3>
+          <dl class="grid gap-x-8 gap-y-3 sm:grid-cols-[11rem_1fr]">
+            <dt class="font-semibold text-plum-800">Responsable</dt>
+            <dd>
+              {publisher.form} «&nbsp;{publisher.name}&nbsp;», joignable à{" "}
+              <a href={`mailto:${sponsorForm.email}`} class={link}>{sponsorForm.email}</a>.
+            </dd>
+
+            <dt class="font-semibold text-plum-800">Finalité</dt>
+            <dd>Traiter votre demande de partenariat et préparer la convention de sponsoring.</dd>
+
+            <dt class="font-semibold text-plum-800">Base légale</dt>
+            <dd>Mesures précontractuelles prises à votre demande (article 6.1.b du RGPD).</dd>
+
+            <dt class="font-semibold text-plum-800">Données</dt>
+            <dd>
+              Les champs du formulaire&nbsp;: entreprise, site web, nom, fonction, e-mail, téléphone, taille de la
+              structure, palier et options souhaités, engagement sur deux ans, participation en 2026, message. Les champs marqués d'un astérisque sont obligatoires
+              pour traiter la demande. Ni votre adresse IP ni votre navigateur ne sont enregistrés avec la demande.
+            </dd>
+
+            <dt class="font-semibold text-plum-800">Destinataires</dt>
+            <dd>
+              L'équipe partenariats de Polycloud, et nos sous-traitants&nbsp;: Cloudflare (hébergement de la base de
+              données, protection anti-robot) et Mailgun, un service de Sinch (envoi de l'e-mail de notification à
+              l'équipe, depuis sa région européenne).
+            </dd>
+
+            <dt class="font-semibold text-plum-800">Localisation</dt>
+            <dd>
+              La base de données des demandes est stockée dans l'Union européenne. Une copie de chaque demande est
+              envoyée par e-mail à l'équipe ({sponsorForm.email}). Cloudflare et Mailgun appartiennent à des groupes
+              établis hors de l'UE&nbsp;: Cloudflare adhère au Data Privacy Framework UE–États-Unis, et Mailgun est
+              encadré par les clauses contractuelles types de la Commission européenne.
+            </dd>
+
+            <dt class="font-semibold text-plum-800">Durée</dt>
+            <dd>
+              3 ans après votre demande. La base de données est purgée automatiquement&nbsp;; les e-mails de
+              notification sont supprimés de notre messagerie dans le même délai.
+            </dd>
+
+            <dt class="font-semibold text-plum-800">Vos droits</dt>
+            <dd>
+              Accès, rectification, effacement, limitation et opposition, en écrivant à{" "}
+              <a href={`mailto:${sponsorForm.email}`} class={link}>{sponsorForm.email}</a>.
+            </dd>
+          </dl>
           <p>
             Pour toute demande relative à vos données (accès, rectification,
             suppression), écrivez à{" "}
@@ -170,6 +247,12 @@ const tel = (phone: string) => `tel:${phone.replace(/[^+\d]/g, "")}`;
           Ce site n'utilise aucun cookie ni traceur soumis à consentement. Seuls
           les talks que vous ajoutez à vos favoris sont enregistrés localement
           dans votre navigateur.
+        </p>
+        <p class="mt-4 leading-relaxed text-plum-950/80">
+          Sur la page <a href="/sponsors" class={link}>Devenir partenaire</a> uniquement, la protection anti-robot
+          Cloudflare Turnstile peut déposer un cookie technique (<code>cf_clearance</code>) et lit des signaux
+          techniques (adresse IP, navigateur) dans le seul but de bloquer les robots. Cloudflare le classe comme
+          strictement nécessaire&nbsp;: il ne requiert donc pas votre consentement.
         </p>
       </section>
     </div>

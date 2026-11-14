@@ -38,17 +38,29 @@ const initials = (name: string) =>
                 "hover:-translate-y-1 hover:shadow-xl hover:shadow-plum-600/10 hover:ring-plum-200",
             ]}
           >
-            <span
-              class:list={[
-                "grid size-20 place-items-center rounded-full text-xl font-bold tracking-wide",
-                i % 2
-                  ? "bg-lilac-400/20 text-lilac-500"
-                  : "bg-plum-100 text-plum-600",
-              ]}
-              aria-hidden="true"
-            >
-              {initials(m.name)}
-            </span>
+            {m.icon ? (
+              <img
+                src={`/images/team/${m.icon}.webp`}
+                alt=""
+                width="80"
+                height="80"
+                loading="lazy"
+                decoding="async"
+                class="size-20 rounded-full object-cover"
+              />
+            ) : (
+              <span
+                class:list={[
+                  "grid size-20 place-items-center rounded-full text-xl font-bold tracking-wide",
+                  i % 2
+                    ? "bg-lilac-400/20 text-lilac-500"
+                    : "bg-plum-100 text-plum-600",
+                ]}
+                aria-hidden="true"
+              >
+                {initials(m.name)}
+              </span>
+            )}
             <span class="mt-4 font-bold text-plum-800">{m.name}</span>
             <span class="mt-1 text-sm text-plum-950/60">{m.role}</span>
             {m.linkedin && (

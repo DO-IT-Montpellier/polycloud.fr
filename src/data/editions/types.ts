@@ -51,7 +51,13 @@ export type SponsorTier = {
   sponsors: Sponsor[];
 };
 
-export type TeamMember = { name: string; role: string; linkedin?: string };
+export type TeamMember = {
+  name: string;
+  role: string;
+  linkedin?: string;
+  /** Asset name in public/images/team/, without the .webp extension */
+  icon?: string;
+};
 
 export type Edition = {
   year: number;
